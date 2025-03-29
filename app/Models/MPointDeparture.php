@@ -9,4 +9,10 @@ class MPointDeparture extends Model
 {
     /** @use HasFactory<\Database\Factories\MPointDepartureFactory> */
     use HasFactory;
+
+    protected $fillable = [
+        'point_departure_name',
+        'zip',
+        'address',
+    ];
 }

@@ -4,14 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class Updatem_point_departureRequest extends FormRequest
+class UpdateMPointDepartureRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,9 @@ class Updatem_point_departureRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'point_departure_name' => ['required', 'string', 'max:50'],
+            'zip' => ['nullable', 'digits:7'],
+            'address' => ['required', 'string', 'max:100'],
         ];
     }
 }
