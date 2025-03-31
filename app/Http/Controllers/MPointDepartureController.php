@@ -13,7 +13,11 @@ class MPointDepartureController extends Controller
      */
     public function index()
     {
-        //
+        $m_point_depatures = MPointDeparture::all();
+
+        return Inertia::render('m_point_depature/Index', [
+            'm_point_depatures' => $m_point_depatures,
+        ]);
     }
 
     /**
