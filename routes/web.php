@@ -25,6 +25,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/m_point_departure', [MPointDepartureController::class, 'index'])->name('m_point_departure.index');
+    Route::get('/m_point_departure/create', [MPointDepartureController::class, 'create'])->name('m_point_departure.createindex');
 
 });
 

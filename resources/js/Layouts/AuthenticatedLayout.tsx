@@ -37,6 +37,14 @@ export default function Authenticated({
                         </div>
 
                         <div className="hidden sm:ms-6 sm:flex sm:items-center">
+                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                <NavLink
+                                    href={route('m_point_departure.index')}
+                                    active={route().current('m_point_departure.index')}
+                                >
+                                    出発地点マスタ
+                                </NavLink>
+                            </div>
                             <div className="relative ms-3">
                                 <Dropdown>
                                     <Dropdown.Trigger>
