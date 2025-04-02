@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreMPointDepartureRequest;
 use App\Http\Requests\UpdateMPointDepartureRequest;
 use App\Models\MPointDeparture;
+use Inertia\Inertia;
 
 class MPointDepartureController extends Controller
 {
@@ -15,7 +16,7 @@ class MPointDepartureController extends Controller
     {
         $m_point_departures = MPointDeparture::all();
 
-        return Inertia::render('m_point_departure/Index', [
+        return Inertia::render('MPointDeparture/Index', [
             'm_point_departures' => $m_point_departures,
         ]);
     }
@@ -25,7 +26,7 @@ class MPointDepartureController extends Controller
      */
     public function create()
     {
-        return Inertia::render('m_point_departure/Create');
+        return Inertia::render('MPointDeparture/Create');
     }
 
     /**

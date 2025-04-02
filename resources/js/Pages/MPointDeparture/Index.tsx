@@ -10,13 +10,13 @@ type PointDeparture = {
 };
 
 type Props = {
-    m_point_depatures: {
+    m_point_departures: {
         data: PointDeparture[];
         // links?: any; // ページネーションを使うなら型追加可
     };
 };
 
-export default function Index({ m_point_depatures }: Props) {
+export default function Index({ m_point_departures }: Props) {
     return (
         <AuthenticatedLayout
             header={
@@ -33,13 +33,13 @@ export default function Index({ m_point_depatures }: Props) {
                             <section className="text-gray-600 body-font">
                                 <div className="container px-5 py-24 mx-auto">
                                     <div className="flex pl-4 my-4 w-full mx-auto">
-                                        {/* <Link
+                                        <Link
                                             as="button"
                                             className="inline-flex items-center px-4 py-2 bg-blue-700 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-500 focus:bg-blue-500 active:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
-                                            href={route('todos.create')}
+                                            href={route('MPointDeparture.create')}
                                         >
                                             新規作成
-                                        </Link> */}
+                                        </Link>
                                     </div>
 
                                     <div className="w-full mx-auto overflow-auto">
@@ -61,22 +61,19 @@ export default function Index({ m_point_depatures }: Props) {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {m_point_depatures.data.map((m_point_depature) => (
-                                                    <tr key={m_point_depature.id}>
-                                                        <td className="px-4 py-3">
-                                                            {/* <Link
-                                                                as="button"
-                                                                className="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg"
-                                                                href={route('todos.edit', { todo: todo.id })}
-                                                            >
-                                                                編集
-                                                            </Link> */}
-                                                        </td>
-                                                        <td className="px-4 py-3">{m_point_depature.point_departure_name}</td>
-                                                        <td className="px-4 py-3">{m_point_depature.zip}</td>
-                                                        <td className="px-4 py-3">{m_point_depature.address}</td>
+                                            {m_point_departures?.data?.length ? (
+                                                m_point_departures.data.map((m_point_departure) => (
+                                                    <tr key={m_point_departure.id}>
+                                                        <td className="px-4 py-3">{m_point_departure.point_departure_name}</td>
+                                                        <td className="px-4 py-3">{m_point_departure.zip}</td>
+                                                        <td className="px-4 py-3">{m_point_departure.address}</td>
                                                     </tr>
-                                                ))}
+                                                ))
+                                            ) : (
+                                                <tr>
+                                                    <td colSpan={4} className="text-center py-4">出発地点のデータがありません</td>
+                                                </tr>
+                                            )}
                                             </tbody>
                                         </table>
                                     </div>
