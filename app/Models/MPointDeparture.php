@@ -15,4 +15,9 @@ class MPointDeparture extends Model
         'zip',
         'address',
     ];
+
+    public static function createMPointDeparture(array $attributes)
+    {
+        return self::create($attributes);
+    }
 }

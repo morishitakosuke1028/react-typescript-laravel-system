@@ -24,8 +24,11 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/m_point_departure', [MPointDepartureController::class, 'index'])->name('MPointDeparture.index');
-    Route::get('/m_point_departure/create', [MPointDepartureController::class, 'create'])->name('MPointDeparture.create');
+    Route::get('/m_point_departures', [MPointDepartureController::class, 'index'])->name('MPointDepartures.index');
+    Route::get('/m_point_departures/create', [MPointDepartureController::class, 'create'])->name('MPointDepartures.create');
+    Route::post('/m_point_departures', [MPointDepartureController::class, 'store'])->name('MPointDepartures.store');
+    Route::get('/m_point_departures/{m_point_departure}/edit', [MPointDepartureController::class, 'edit'])->name('MPointDepartures.edit');
+    Route::put('/m_point_departures/{m_point_departure}', [MPointDepartureController::class, 'update'])->name('MPointDepartures.update');
 
 });
 

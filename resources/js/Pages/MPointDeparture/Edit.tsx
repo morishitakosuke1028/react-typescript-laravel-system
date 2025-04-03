@@ -2,16 +2,16 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
 import MPointDepartureForm from "@/Components/MPointDeparture/Form";
 
-export default function Create({}) {
+export default function Edit({}) {
     return (
         <AuthenticatedLayout
             header={
                 <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    出発地点マスタ作成
+                    出発地点マスタ編集
                 </h2>
             }
         >
-            <Head title="出発地点マスタ作成" />
+            <Head title="出発地点マスタ編集" />
 
             <div className="py-12">
                 <div className="mx-auto sm:px-6 lg:px-8">

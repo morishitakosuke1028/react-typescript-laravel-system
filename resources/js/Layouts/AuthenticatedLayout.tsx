@@ -39,8 +39,8 @@ export default function Authenticated({
                         <div className="hidden sm:ms-6 sm:flex sm:items-center">
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink
-                                    href={route('MPointDeparture.index')}
-                                    active={route().current('MPointDeparture.index')}
+                                    href={route('MPointDepartures.index')}
+                                    active={route().current('MPointDepartures.index')}
                                 >
                                     出発地点マスタ
                                 </NavLink>
