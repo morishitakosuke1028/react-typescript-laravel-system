@@ -14,10 +14,10 @@ class MPointDepartureController extends Controller
      */
     public function index()
     {
-        $m_point_departures = MPointDeparture::all();
+        $m_point_departures = MPointDeparture::paginate(10);
 
         return Inertia::render('MPointDeparture/Index', [
-            'm_point_departures' => $m_point_departures,
+            'm_point_departures' => $m_point_departures
         ]);
     }
 
@@ -47,19 +47,13 @@ class MPointDepartureController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(MPointDeparture $m_point_departure)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(MPointDeparture $m_point_departure)
     {
-        //
+        return Inertia::render('MPointDeparture/Edit', [
+            'm_point_departure' => $m_point_departure
+        ]);
     }
 
     /**

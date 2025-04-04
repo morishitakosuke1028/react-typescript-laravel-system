@@ -8,7 +8,7 @@ type Props = {
         point_departure_name: string;
         zip: string;
         address: string;
-    };
+    } | null;
     onSuccess?: () => void;
 };
 
@@ -20,7 +20,7 @@ export default function Form({ isEdit = false, m_point_departure = null, onSucce
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setData(e.target.name, e.target.value);
+        setData(e.target.name as keyof typeof data, e.target.value);
     };
 
     const handleSubmit = (e: React.FormEvent) => {

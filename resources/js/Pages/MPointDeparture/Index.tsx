@@ -47,7 +47,7 @@ export default function Index({ m_point_departures }: Props) {
                                             <thead>
                                                 <tr>
                                                     <th className="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl">
-                                                        &nbsp;
+                                                        No.
                                                     </th>
                                                     <th className="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">
                                                         出発地点名
@@ -58,15 +58,27 @@ export default function Index({ m_point_departures }: Props) {
                                                     <th className="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">
                                                         出発地点住所
                                                     </th>
+                                                    <th className="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">
+
+                                                    </th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                             {m_point_departures?.data?.length ? (
                                                 m_point_departures.data.map((m_point_departure) => (
                                                     <tr key={m_point_departure.id}>
+                                                        <td className="px-4 py-3">{m_point_departure.id}</td>
                                                         <td className="px-4 py-3">{m_point_departure.point_departure_name}</td>
                                                         <td className="px-4 py-3">{m_point_departure.zip}</td>
                                                         <td className="px-4 py-3">{m_point_departure.address}</td>
+                                                        <td className="px-4 py-3">
+                                                            <Link
+                                                                as="button"
+                                                                className="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg"
+                                                                href={route('MPointDepartures.edit', { m_point_departure: m_point_departure.id })}
+                                                            >
+                                                                編集
+                                                            </Link></td>
                                                     </tr>
                                                 ))
                                             ) : (
