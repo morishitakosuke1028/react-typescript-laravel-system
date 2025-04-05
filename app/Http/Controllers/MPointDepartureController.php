@@ -61,7 +61,15 @@ class MPointDepartureController extends Controller
      */
     public function update(UpdateMPointDepartureRequest $request, MPointDeparture $m_point_departure)
     {
-        //
+        $m_point_departure->point_departure_name = $request->point_departure_name;
+        $m_point_departure->zip = $request->zip;
+        $m_point_departure->address = $request->address;
+        $m_point_departure->save();
+        return to_route('MPointDepartures.index')
+        ->with([
+            'message' => '更新しました。',
+            'status' => 'success',
+        ]);
     }
 
     /**
