@@ -77,6 +77,11 @@ class MPointDepartureController extends Controller
      */
     public function destroy(MPointDeparture $m_point_departure)
     {
-        //
+        $m_point_departure->delete();
+        return to_route('MPointDepartures.index')
+        ->with([
+            'message' => '削除しました。',
+            'status' => 'danger',
+        ]);
     }
 }

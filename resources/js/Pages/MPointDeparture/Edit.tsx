@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
 import MPointDepartureForm from "@/Components/MPointDeparture/Form";
 
 type PointDeparture = {
@@ -14,6 +14,13 @@ type Props = {
 };
 
 export default function Edit({ m_point_departure }: Props) {
+    const { delete: destroy, processing } = useForm();
+
+    const handleDelete = () => {
+        if (confirm('本当に削除しますか？')) {
+            destroy(route('MPointDepartures.destroy', m_point_departure.id));
+        }
+    };
     return (
         <AuthenticatedLayout
             header={
@@ -33,10 +40,19 @@ export default function Edit({ m_point_departure }: Props) {
                                     isEdit={true}
                                     m_point_departure={m_point_departure}
                                 />
-                                <div className="text-center mt-4">
+                                <div className="mt-4 text-center">
                                     <Link href={route('MPointDepartures.index')} className="text-white bg-gray-500 py-2 px-8 rounded">
                                         戻る
                                     </Link>
+                                </div>
+                                <div className="mt-3 text-center">
+                                    <button
+                                        className="text-white bg-red-500 py-2 px-8 rounded"
+                                        onClick={handleDelete}
+                                        disabled={processing}
+                                    >
+                                        削除
+                                    </button>
                                 </div>
                             </section>
                         </div>

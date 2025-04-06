@@ -29,7 +29,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/m_point_departures', [MPointDepartureController::class, 'store'])->name('MPointDepartures.store');
     Route::get('/m_point_departures/{m_point_departure}/edit', [MPointDepartureController::class, 'edit'])->name('MPointDepartures.edit');
     Route::put('/m_point_departures/{m_point_departure}', [MPointDepartureController::class, 'update'])->name('MPointDepartures.update');
-
+    Route::delete('/m_point_departures/{m_point_departure}', [MPointDepartureController::class, 'destroy'])->name('MPointDepartures.destroy');
 });
 
 require __DIR__.'/auth.php';
