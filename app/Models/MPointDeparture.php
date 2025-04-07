@@ -20,4 +20,9 @@ class MPointDeparture extends Model
     {
         return self::create($attributes);
     }
+
+    public function updateMPointDeparture(array $data): void
+    {
+        $this->fill($data)->save();
+    }
 }
