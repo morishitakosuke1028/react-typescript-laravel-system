@@ -16,7 +16,7 @@ export default function Authenticated({
 
     return (
         <div className="min-h-screen bg-gray-100">
-            <nav className="border-b border-gray-100 bg-white">
+            <nav className="border-b border-gray-100 bg-indigo-500">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-16 justify-between">
                         <div className="flex">
@@ -45,13 +45,21 @@ export default function Authenticated({
                                     出発地点マスタ
                                 </NavLink>
                             </div>
-                            <div className="relative ms-3">
+                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                <NavLink
+                                    href={route('MInsuranceCompanies.index')}
+                                    active={route().current('MInsuranceCompanies.index')}
+                                >
+                                    保険会社マスタ
+                                </NavLink>
+                            </div>
+                            <div className="relative ms-3 bg-indigo-500">
                                 <Dropdown>
                                     <Dropdown.Trigger>
                                         <span className="inline-flex rounded-md">
                                             <button
                                                 type="button"
-                                                className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
+                                                className="inline-flex items-center rounded-md border border-transparent bg-indigo-700 px-3 py-2 text-sm font-medium leading-4 text-black transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
                                             >
                                                 {user.name}
 
@@ -158,6 +166,12 @@ export default function Authenticated({
                         </div>
 
                         <div className="mt-3 space-y-1">
+                            <ResponsiveNavLink href={route('MPointDepartures.index')}>
+                                出発地点マスタ
+                            </ResponsiveNavLink>
+                            <ResponsiveNavLink href={route('MInsuranceCompanies.index')}>
+                                保険会社マスタ
+                            </ResponsiveNavLink>
                             <ResponsiveNavLink href={route('profile.edit')}>
                                 Profile
                             </ResponsiveNavLink>
