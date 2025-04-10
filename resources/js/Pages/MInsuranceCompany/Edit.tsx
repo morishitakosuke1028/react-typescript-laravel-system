@@ -4,9 +4,12 @@ import MInsuranceCompanyForm from "@/Components/MInsuranceCompany/Form";
 
 type InsuranceCompany = {
     id: number;
-    point_departure_name: string;
-    zip: string;
-    address: string;
+    insurance_company_name: string;
+    insurance_company_kana: string;
+    policy_number: string;
+    person_name: string;
+    tel: string;
+    email: string;
 };
 
 type Props = {
@@ -18,7 +21,7 @@ export default function Edit({ m_insurance_company }: Props) {
 
     const handleDelete = () => {
         if (confirm('本当に削除しますか？')) {
-            destroy(route('MInsuranceCompany.destroy', m_insurance_company.id));
+            destroy(route('MInsuranceCompanies.destroy', m_insurance_company.id));
         }
     };
     return (

@@ -4,9 +4,11 @@ import { Head, Link } from '@inertiajs/react';
 
 type InsuranceCompany = {
     id: number;
-    point_departure_name: string;
-    zip: string;
-    address: string;
+    insurance_company_name: string;
+    policy_number: string;
+    person_name: string;
+    tel: string;
+    email: string;
 };
 
 type Props = {
@@ -50,13 +52,19 @@ export default function Index({ m_insurance_companies }: Props) {
                                                         No.
                                                     </th>
                                                     <th className="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">
-                                                        出発地点名
+                                                        保険会社名
                                                     </th>
                                                     <th className="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">
-                                                        出発地点郵便番号
+                                                        証券番号
                                                     </th>
                                                     <th className="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">
-                                                        出発地点住所
+                                                        担当者名
+                                                    </th>
+                                                    <th className="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">
+                                                        電話番号
+                                                    </th>
+                                                    <th className="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">
+                                                        メールアドレス
                                                     </th>
                                                     <th className="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">
 
@@ -68,9 +76,11 @@ export default function Index({ m_insurance_companies }: Props) {
                                                 m_insurance_companies.data.map((m_insurance_company) => (
                                                     <tr key={m_insurance_company.id}>
                                                         <td className="px-4 py-3">{m_insurance_company.id}</td>
-                                                        <td className="px-4 py-3">{m_insurance_company.point_departure_name}</td>
-                                                        <td className="px-4 py-3">{m_insurance_company.zip}</td>
-                                                        <td className="px-4 py-3">{m_insurance_company.address}</td>
+                                                        <td className="px-4 py-3">{m_insurance_company.insurance_company_name}</td>
+                                                        <td className="px-4 py-3">{m_insurance_company.policy_number}</td>
+                                                        <td className="px-4 py-3">{m_insurance_company.person_name}</td>
+                                                        <td className="px-4 py-3">{m_insurance_company.tel}</td>
+                                                        <td className="px-4 py-3">{m_insurance_company.email}</td>
                                                         <td className="px-4 py-3">
                                                             <Link
                                                                 as="button"

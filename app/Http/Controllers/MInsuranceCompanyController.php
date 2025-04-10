@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreMInsuranceCompanyRequest;
 use App\Http\Requests\UpdateMInsuranceCompanyRequest;
 use App\Models\MInsuranceCompany;
+use Inertia\Inertia;
 
 class MInsuranceCompanyController extends Controller
 {
@@ -13,7 +14,11 @@ class MInsuranceCompanyController extends Controller
      */
     public function index()
     {
-        //
+        $m_insurance_companies = MInsuranceCompany::paginate(10);
+
+        return Inertia::render('MInsuranceCompany/Index', [
+            'm_insurance_companies' => $m_insurance_companies
+        ]);
     }
 
     /**
@@ -21,7 +26,7 @@ class MInsuranceCompanyController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('MInsuranceCompany/Create');
     }
 
     /**
@@ -29,15 +34,21 @@ class MInsuranceCompanyController extends Controller
      */
     public function store(StoreMInsuranceCompanyRequest $request)
     {
-        //
-    }
+        MInsuranceCompany::createMInsuranceCompany(
+            $request->only([
+                'insurance_company_name',
+                'insurance_company_kana',
+                'policy_number',
+                'person_name',
+                'tel',
+                'email',
+            ])
+        );
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(MInsuranceCompany $m_insurance_company)
-    {
-        //
+        return to_route('MInsuranceCompanies.index')->with([
+            'message' => '登録しました。',
+            'status' => 'success',
+        ]);
     }
 
     /**
@@ -45,7 +56,9 @@ class MInsuranceCompanyController extends Controller
      */
     public function edit(MInsuranceCompany $m_insurance_company)
     {
-        //
+        return Inertia::render('MInsuranceCompany/Edit', [
+            'm_insurance_company' => $m_insurance_company
+        ]);
     }
 
     /**
@@ -53,7 +66,22 @@ class MInsuranceCompanyController extends Controller
      */
     public function update(UpdateMInsuranceCompanyRequest $request, MInsuranceCompany $m_insurance_company)
     {
-        //
+        $m_insurance_company->updateMInsuranceCompany(
+            $request->only([
+                'insurance_company_name',
+                'insurance_company_kana',
+                'policy_number',
+                'person_name',
+                'tel',
+                'email',
+            ])
+        );
+
+        return to_route('MInsuranceCompanies.index')
+        ->with([
+            'message' => '更新しました。',
+            'status' => 'success',
+        ]);
     }
 
     /**
@@ -61,6 +89,11 @@ class MInsuranceCompanyController extends Controller
      */
     public function destroy(MInsuranceCompany $m_insurance_company)
     {
-        //
+        $m_insurance_company->delete();
+        return to_route('MInsuranceCompanies.index')
+        ->with([
+            'message' => '削除しました。',
+            'status' => 'danger',
+        ]);
     }
 }

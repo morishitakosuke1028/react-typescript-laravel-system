@@ -34,11 +34,13 @@ class MPointDepartureController extends Controller
      */
     public function store(StoreMPointDepartureRequest $request)
     {
-        MPointDeparture::createMPointDeparture([
-            'point_departure_name' => $request->point_departure_name,
-            'zip' => $request->zip,
-            'address' => $request->address,
-        ]);
+        MPointDeparture::createMPointDeparture(
+            $request->only([
+                'point_departure_name',
+                'zip',
+                'address',
+            ])
+        );
 
         return to_route('MPointDepartures.index')->with([
             'message' => '登録しました。',
@@ -61,11 +63,13 @@ class MPointDepartureController extends Controller
      */
     public function update(UpdateMPointDepartureRequest $request, MPointDeparture $m_point_departure)
     {
-        $m_point_departure->updateMPointDeparture($request->only([
-            'point_departure_name',
-            'zip',
-            'address',
-        ]));
+        $m_point_departure->updateMPointDeparture(
+            $request->only([
+                'point_departure_name',
+                'zip',
+                'address',
+            ])
+        );
 
         return to_route('MPointDepartures.index')
         ->with([

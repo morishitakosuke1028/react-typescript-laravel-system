@@ -11,7 +11,7 @@ class UpdateMInsuranceCompanyRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,12 @@ class UpdateMInsuranceCompanyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'insurance_company_name' => ['required', 'string', 'max:50'],
+            'insurance_company_kana' => ['required', 'string', 'max:50', 'regex:/^[ァ-ヶー\s]+$/u'],
+            'policy_number' => ['required', 'string', 'max:50'],
+            'person_name' => ['required', 'string', 'max:50'],
+            'tel' => ['required', 'string', 'max:20', 'regex:/^0\d{1,4}-\d{1,4}-\d{3,4}$|^0\d{9,10}$/'],
+            'email' => ['required', 'string', 'email', 'max:255'],
         ];
     }
 }
