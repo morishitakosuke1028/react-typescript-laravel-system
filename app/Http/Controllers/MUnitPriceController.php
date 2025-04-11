@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreMUnitPriceRequest;
 use App\Http\Requests\UpdateMUnitPriceRequest;
 use App\Models\MUnitPrice;
+use Inertia\Inertia;
 
 class MUnitPriceController extends Controller
 {
@@ -13,7 +14,11 @@ class MUnitPriceController extends Controller
      */
     public function index()
     {
-        //
+        $m_unit_prices = MUnitPrice::paginate(10);
+
+        return Inertia::render('MUnitPrice/Index', [
+            'm_unit_prices' => $m_unit_prices
+        ]);
     }
 
     /**
@@ -21,7 +26,7 @@ class MUnitPriceController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('MUnitPrice/Create');
     }
 
     /**
@@ -29,7 +34,17 @@ class MUnitPriceController extends Controller
      */
     public function store(StoreMUnitPriceRequest $request)
     {
-        //
+        MUnitPrice::createMUnitPrice(
+            $request->only([
+                'unit_price_name',
+                'km_unit_price',
+            ])
+        );
+
+        return to_route('MUnitPrices.index')->with([
+            'message' => '登録しました。',
+            'status' => 'success',
+        ]);
     }
 
     /**
@@ -37,7 +52,9 @@ class MUnitPriceController extends Controller
      */
     public function edit(MUnitPrice $m_unit_price)
     {
-        //
+        return Inertia::render('MUnitPrice/Edit', [
+            'm_unit_price' => $m_unit_price
+        ]);
     }
 
     /**
@@ -45,7 +62,18 @@ class MUnitPriceController extends Controller
      */
     public function update(UpdateMUnitPriceRequest $request, MUnitPrice $m_unit_price)
     {
-        //
+        $m_unit_price->updateMUnitPrice(
+            $request->only([
+                'unit_price_name',
+                'km_unit_price',
+            ])
+        );
+
+        return to_route('MUnitPrices.index')
+        ->with([
+            'message' => '更新しました。',
+            'status' => 'success',
+        ]);
     }
 
     /**
@@ -53,6 +81,11 @@ class MUnitPriceController extends Controller
      */
     public function destroy(MUnitPrice $m_unit_price)
     {
-        //
+        $m_unit_price->delete();
+        return to_route('MUnitPrices.index')
+        ->with([
+            'message' => '削除しました。',
+            'status' => 'danger',
+        ]);
     }
 }

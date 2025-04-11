@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MPointDepartureController;
 use App\Http\Controllers\MInsuranceCompanyController;
+use App\Http\Controllers\MUnitPriceController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -37,6 +38,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/m_insurance_companies/{m_insurance_company}/edit', [MInsuranceCompanyController::class, 'edit'])->name('MInsuranceCompanies.edit');
     Route::put('/m_insurance_companies/{m_insurance_company}', [MInsuranceCompanyController::class, 'update'])->name('MInsuranceCompanies.update');
     Route::delete('/m_insurance_companies/{m_insurance_company}', [MInsuranceCompanyController::class, 'destroy'])->name('MInsuranceCompanies.destroy');
+    Route::get('/m_unit_prices', [MUnitPriceController::class, 'index'])->name('MUnitPrices.index');
+    Route::get('/m_unit_prices/create', [MUnitPriceController::class, 'create'])->name('MUnitPrices.create');
+    Route::post('/m_unit_prices', [MUnitPriceController::class, 'store'])->name('MUnitPrices.store');
+    Route::get('/m_unit_prices/{m_unit_price}/edit', [MUnitPriceController::class, 'edit'])->name('MUnitPrices.edit');
+    Route::put('/m_unit_prices/{m_unit_price}', [MUnitPriceController::class, 'update'])->name('MUnitPrices.update');
+    Route::delete('/m_unit_prices/{m_unit_price}', [MUnitPriceController::class, 'destroy'])->name('MUnitPrices.destroy');
 });
 
 require __DIR__.'/auth.php';

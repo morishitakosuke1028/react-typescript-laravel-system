@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('m_unit_prices', function (Blueprint $table) {
             $table->id();
+            $table->string('unit_price_name');
+            $table->integer('km_unit_price');
             $table->timestamps();
         });
     }

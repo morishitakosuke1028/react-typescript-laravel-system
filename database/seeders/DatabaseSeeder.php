@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             MPointDepartureSeeder::class,
             MInsuranceCompanySeeder::class,
+            MUnitPriceSeeder::class,
         ]);
     }
 }

@@ -53,6 +53,14 @@ export default function Authenticated({
                                     保険会社マスタ
                                 </NavLink>
                             </div>
+                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                <NavLink
+                                    href={route('MUnitPrices.index')}
+                                    active={route().current('MUnitPrices.index')}
+                                >
+                                    単価マスタ
+                                </NavLink>
+                            </div>
                             <div className="relative ms-3 bg-indigo-500">
                                 <Dropdown>
                                     <Dropdown.Trigger>
@@ -171,6 +179,9 @@ export default function Authenticated({
                             </ResponsiveNavLink>
                             <ResponsiveNavLink href={route('MInsuranceCompanies.index')}>
                                 保険会社マスタ
+                            </ResponsiveNavLink>
+                            <ResponsiveNavLink href={route('MUnitPrices.index')}>
+                                単価マスタ
                             </ResponsiveNavLink>
                             <ResponsiveNavLink href={route('profile.edit')}>
                                 Profile

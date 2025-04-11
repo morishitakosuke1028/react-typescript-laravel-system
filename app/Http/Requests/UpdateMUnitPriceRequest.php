@@ -11,7 +11,7 @@ class UpdateMUnitPriceRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,8 @@ class UpdateMUnitPriceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'unit_price_name' => ['required', 'string', 'max:50'],
+            'km_unit_price' => ['required', 'integer', 'min:1'],
         ];
     }
 }
