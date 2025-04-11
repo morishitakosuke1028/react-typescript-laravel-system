@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-// import Pagination from '@/Components/Pagination';
+import Pagination from '@/Components/Pagination';
 import { Head, Link } from '@inertiajs/react';
 
 type InsuranceCompany = {
@@ -11,10 +11,17 @@ type InsuranceCompany = {
     email: string;
 };
 
+type PaginationLink = {
+    url: string | null;
+    label: string;
+    active: boolean;
+};
+
+
 type Props = {
     m_insurance_companies: {
         data: InsuranceCompany[];
-        // links?: any; // ページネーションを使うなら型追加可
+        links: PaginationLink[];
     };
 };
 
@@ -101,7 +108,7 @@ export default function Index({ m_insurance_companies }: Props) {
                                     </div>
                                 </div>
                                 <div className="text-center">
-                                    {/* <Pagination links={m_point_depatures.links} /> */}
+                                    <Pagination links={m_insurance_companies.links} />
                                 </div>
                             </section>
                         </div>

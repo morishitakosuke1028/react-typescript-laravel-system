@@ -24,10 +24,10 @@ class StoreMInsuranceCompanyRequest extends FormRequest
         return [
             'insurance_company_name' => ['required', 'string', 'max:50'],
             'insurance_company_kana' => ['required', 'string', 'max:50', 'regex:/^[ァ-ヶー\s]+$/u'],
-            'policy_number' => ['required', 'string', 'max:50'],
+            'policy_number' => ['required', 'string', 'max:50', 'unique:m_insurance_companies,policy_number'],
             'person_name' => ['required', 'string', 'max:50'],
-            'tel' => ['required', 'string', 'max:20', 'regex:/^0\d{1,4}-\d{1,4}-\d{3,4}$|^0\d{9,10}$/'],
-            'email' => ['required', 'string', 'email', 'max:255'],
+            'tel' => ['required', 'string', 'max:20', 'regex:/^0\d{1,4}-\d{1,4}-\d{3,4}$|^0\d{9,10}$/', 'unique:m_insurance_companies,tel'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:m_insurance_companies,email'],
         ];
     }
 }
