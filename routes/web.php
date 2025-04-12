@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MPointDepartureController;
 use App\Http\Controllers\MInsuranceCompanyController;
 use App\Http\Controllers\MUnitPriceController;
+use App\Http\Controllers\ClaimController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -44,6 +45,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/m_unit_prices/{m_unit_price}/edit', [MUnitPriceController::class, 'edit'])->name('MUnitPrices.edit');
     Route::put('/m_unit_prices/{m_unit_price}', [MUnitPriceController::class, 'update'])->name('MUnitPrices.update');
     Route::delete('/m_unit_prices/{m_unit_price}', [MUnitPriceController::class, 'destroy'])->name('MUnitPrices.destroy');
+    Route::get('/claims', [ClaimController::class, 'index'])->name('Claims.index');
+    Route::get('/claims/create', [ClaimController::class, 'create'])->name('Claims.create');
+    Route::post('/claims', [ClaimController::class, 'store'])->name('Claims.store');
+    Route::get('/claims/{claim}/edit', [ClaimController::class, 'edit'])->name('Claims.edit');
+    Route::put('/claims/{claim}', [ClaimController::class, 'update'])->name('Claims.update');
+    Route::delete('/claims/{claim}', [ClaimController::class, 'destroy'])->name('Claims.destroy');
 });
 
 require __DIR__.'/auth.php';

@@ -4,14 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreclaimRequest extends FormRequest
+class StoreClaimRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,17 @@ class StoreclaimRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'm_point_departure_id' => ['nullable', 'integer', 'min:1'],
+            'other_point_departure_address' => ['nullable', 'string', 'max:255'],
+            'local_address' => ['nullable', 'string', 'max:255'],
+            'arrival_point_address' => ['nullable', 'string', 'max:255'],
+            'transportation_image' => ['nullable', 'string', 'max:255'],
+            'price' => ['nullable', 'integer', 'min:0'],
+            'm_insurance_company_id' => ['required', 'integer', 'min:1'],
+            'status' => ['required', 'in:0,1'],
+            'm_unit_price_id' => ['required', 'integer', 'min:1'],
+            'workday' => ['nullable', 'date'],
+            'worktime' => ['nullable', 'date_format:Y-m-d H:i:s'],
         ];
     }
 }

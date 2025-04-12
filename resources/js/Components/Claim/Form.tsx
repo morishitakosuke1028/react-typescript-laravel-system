@@ -1,0 +1,283 @@
+import React from "react";
+import { useForm } from "@inertiajs/react";
+
+type Props = {
+    isEdit?: boolean;
+    claim?: {
+        id: number;
+        m_point_departure_id: number;
+        other_point_departure_address: string;
+        local_address: string;
+        arrival_point_address: string;
+        transportation_image: string;
+        price: number;
+        m_insurance_company_id: number;
+        status: number;
+        m_unit_price_id: number;
+        workday: string | null;
+        worktime: string | null;
+    } | null;
+    onSuccess?: () => void;
+};
+
+export default function Form({ isEdit = false, claim = null, onSuccess }: Props) {
+    const { data, setData, post, put, processing, errors } = useForm({
+        m_point_departure_id: claim?.m_point_departure_id ?? '',
+        other_point_departure_address: claim?.other_point_departure_address ?? '',
+        local_address: claim?.local_address ?? '',
+        arrival_point_address: claim?.arrival_point_address ?? '',
+        transportation_image: claim?.transportation_image ?? '',
+        price: claim?.price ?? '',
+        m_insurance_company_id: claim?.m_insurance_company_id ?? '',
+        status: claim?.status ?? '',
+        m_unit_price_id: claim?.m_unit_price_id ?? '',
+        workday: claim?.workday ?? '',
+        worktime: claim?.worktime ?? '',
+    });
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setData(e.target.name as keyof typeof data, e.target.value);
+    };
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+
+        if (isEdit && claim) {
+            put(`/claims/${claim.id}`, {
+                onSuccess: () => {
+                    if (onSuccess) onSuccess();
+                },
+                onError: (errors) => {
+                    console.error("バリデーションエラー:", errors);
+                }
+            });
+        } else {
+            post('/claims', {
+                onSuccess: () => {
+                    if (onSuccess) onSuccess();
+                },
+                onError: (errors) => {
+                    console.error("バリデーションエラー:", errors);
+                }
+            });
+        }
+    };
+
+    return (
+        <form onSubmit={handleSubmit}>
+            <div className="container px-5 py-8 mx-auto">
+                <div className="lg:w-1/2 md:w-2/3 mx-auto">
+                    <div className="flex flex-wrap -m-2">
+                        {/* 出発地点 */}
+                        <div className="p-2 w-full">
+                            <label htmlFor="m_point_departure_id" className="leading-7 text-sm text-gray-600">
+                                出発地点<span className="text-red-500 ml-1">*</span>
+                            </label>
+                            <input
+                                type="text"
+                                id="m_point_departure_id"
+                                name="m_point_departure_id"
+                                value={data.m_point_departure_id}
+                                onChange={handleChange}
+                                className="w-full border border-gray-300 rounded px-3 py-2"
+                            />
+                            {errors.m_point_departure_id && (
+                                <div className="mt-2 text-red-500 text-xs">{errors.m_point_departure_id}</div>
+                            )}
+                        </div>
+
+                        {/* その他出発地点住所*/}
+                        <div className="p-2 w-full">
+                            <label htmlFor="other_point_departure_address" className="leading-7 text-sm text-gray-600">
+                                その他出発地点住所
+                            </label>
+                            <input
+                                type="text"
+                                id="other_point_departure_address"
+                                name="other_point_departure_address"
+                                value={data.other_point_departure_address}
+                                onChange={handleChange}
+                                className="w-full border border-gray-300 rounded px-3 py-2"
+                            />
+                            {errors.other_point_departure_address && (
+                                <div className="mt-2 text-red-500 text-xs">{errors.other_point_departure_address}</div>
+                            )}
+                        </div>
+
+                        {/* 現地住所*/}
+                        <div className="p-2 w-full">
+                            <label htmlFor="local_address" className="leading-7 text-sm text-gray-600">
+                                現地住所
+                            </label>
+                            <input
+                                type="text"
+                                id="local_address"
+                                name="local_address"
+                                value={data.local_address}
+                                onChange={handleChange}
+                                className="w-full border border-gray-300 rounded px-3 py-2"
+                            />
+                            {errors.local_address && (
+                                <div className="mt-2 text-red-500 text-xs">{errors.local_address}</div>
+                            )}
+                        </div>
+
+                        {/* 到着地点住所*/}
+                        <div className="p-2 w-full">
+                            <label htmlFor="arrival_point_addresslocal_address" className="leading-7 text-sm text-gray-600">
+                                到着地点住所
+                            </label>
+                            <input
+                                type="text"
+                                id="arrival_point_address"
+                                name="arrival_point_address"
+                                value={data.arrival_point_address}
+                                onChange={handleChange}
+                                className="w-full border border-gray-300 rounded px-3 py-2"
+                            />
+                            {errors.arrival_point_address && (
+                                <div className="mt-2 text-red-500 text-xs">{errors.arrival_point_address}</div>
+                            )}
+                        </div>
+
+                        {/* 搬送画像*/}
+                        <div className="p-2 w-full">
+                            <label htmlFor="transportation_image" className="leading-7 text-sm text-gray-600">
+                                搬送画像
+                            </label>
+                            <input
+                                type="text"
+                                id="transportation_image"
+                                name="transportation_image"
+                                value={data.transportation_image}
+                                onChange={handleChange}
+                                className="w-full border border-gray-300 rounded px-3 py-2"
+                            />
+                            {errors.transportation_image && (
+                                <div className="mt-2 text-red-500 text-xs">{errors.transportation_image}</div>
+                            )}
+                        </div>
+
+                        {/* 単価*/}
+                        <div className="p-2 w-full">
+                            <label htmlFor="m_unit_price_id" className="leading-7 text-sm text-gray-600">
+                                単価
+                            </label>
+                            <input
+                                type="text"
+                                id="m_unit_price_id"
+                                name="m_unit_price_id"
+                                value={data.m_unit_price_id}
+                                onChange={handleChange}
+                                className="w-full border border-gray-300 rounded px-3 py-2"
+                            />
+                            {errors.m_unit_price_id && (
+                                <div className="mt-2 text-red-500 text-xs">{errors.m_unit_price_id}</div>
+                            )}
+                        </div>
+
+                        {/* 料金*/}
+                        <div className="p-2 w-full">
+                            <label htmlFor="price" className="leading-7 text-sm text-gray-600">
+                                料金
+                            </label>
+                            <input
+                                type="text"
+                                id="price"
+                                name="price"
+                                value={data.price}
+                                onChange={handleChange}
+                                className="w-full border border-gray-300 rounded px-3 py-2"
+                            />
+                            {errors.price && (
+                                <div className="mt-2 text-red-500 text-xs">{errors.price}</div>
+                            )}
+                        </div>
+
+                        {/* 保険会社*/}
+                        <div className="p-2 w-full">
+                            <label htmlFor="m_insurance_company_id" className="leading-7 text-sm text-gray-600">
+                                保険会社
+                            </label>
+                            <input
+                                type="text"
+                                id="m_insurance_company_id"
+                                name="m_insurance_company_id"
+                                value={data.m_insurance_company_id}
+                                onChange={handleChange}
+                                className="w-full border border-gray-300 rounded px-3 py-2"
+                            />
+                            {errors.m_insurance_company_id && (
+                                <div className="mt-2 text-red-500 text-xs">{errors.m_insurance_company_id}</div>
+                            )}
+                        </div>
+
+                        {/* 作業日*/}
+                        <div className="p-2 w-full">
+                            <label htmlFor="workday" className="leading-7 text-sm text-gray-600">
+                                作業日
+                            </label>
+                            <input
+                                type="date"
+                                id="workday"
+                                name="workday"
+                                value={data.workday}
+                                onChange={handleChange}
+                                className="w-full border border-gray-300 rounded px-3 py-2"
+                            />
+                            {errors.workday && (
+                                <div className="mt-2 text-red-500 text-xs">{errors.workday}</div>
+                            )}
+                        </div>
+
+                        {/* 作業時分*/}
+                        <div className="p-2 w-full">
+                            <label htmlFor="worktime" className="leading-7 text-sm text-gray-600">
+                                作業　時：　分
+                            </label>
+                            <input
+                                type="time"
+                                id="worktime"
+                                name="worktime"
+                                value={data.worktime}
+                                onChange={handleChange}
+                                className="w-full border border-gray-300 rounded px-3 py-2"
+                            />
+                            {errors.worktime && (
+                                <div className="mt-2 text-red-500 text-xs">{errors.worktime}</div>
+                            )}
+                        </div>
+
+                        {/* ステータス*/}
+                        <div className="p-2 w-full">
+                            <label htmlFor="status" className="leading-7 text-sm text-gray-600">
+                                ステータス
+                            </label>
+                            <input
+                                type="text"
+                                id="status"
+                                name="status"
+                                value={data.status}
+                                onChange={handleChange}
+                                className="w-full border border-gray-300 rounded px-3 py-2"
+                            />
+                            {errors.status && (
+                                <div className="mt-2 text-red-500 text-xs">{errors.status}</div>
+                            )}
+                        </div>
+
+                        <div className="p-2 w-full text-center">
+                            <button
+                                type="submit"
+                                disabled={processing}
+                                className="text-white bg-blue-500 py-2 px-8 rounded hover:bg-blue-600"
+                            >
+                                {isEdit ? "更新" : "登録"}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    );
+}
