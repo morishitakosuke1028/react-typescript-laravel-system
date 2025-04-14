@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::table('claims', function (Blueprint $table) {
             $table->string('name');
+            $table->string('customer_contact');
         });
     }
 
@@ -23,6 +24,7 @@ return new class extends Migration
     {
         Schema::table('claims', function (Blueprint $table) {
             $table->dropColumn('name');
+            $table->dropColumn('customer_contact');
         });
     }
 };

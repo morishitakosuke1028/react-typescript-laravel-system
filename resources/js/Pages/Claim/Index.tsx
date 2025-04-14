@@ -15,6 +15,8 @@ type Claim = {
     m_unit_price_id: number;
     workday: string | null;
     worktime: string | null;
+    name: string;
+    customer_contact: string;
 };
 
 type PaginationLink = {
@@ -64,13 +66,13 @@ export default function Index({ claims }: Props) {
                                                         No.
                                                     </th>
                                                     <th className="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">
-                                                        単価名
+                                                        顧客名
                                                     </th>
                                                     <th className="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">
-                                                        キロ単価
+                                                        顧客連絡先
                                                     </th>
                                                     <th className="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">
-
+                                                        保険会社名
                                                     </th>
                                                 </tr>
                                             </thead>
@@ -79,8 +81,9 @@ export default function Index({ claims }: Props) {
                                                 claims.data.map((claim) => (
                                                     <tr key={claim.id}>
                                                         <td className="px-4 py-3">{claim.id}</td>
-                                                        <td className="px-4 py-3">{claim.unit_price_name}</td>
-                                                        <td className="px-4 py-3">{claim.km_unit_price}</td>
+                                                        <td className="px-4 py-3">{claim.name}</td>
+                                                        <td className="px-4 py-3">{claim.customer_contact}</td>
+                                                        <td className="px-4 py-3">{claim.m_insurance_company_id}</td>
                                                         <td className="px-4 py-3">
                                                             <Link
                                                                 as="button"
@@ -93,7 +96,7 @@ export default function Index({ claims }: Props) {
                                                 ))
                                             ) : (
                                                 <tr>
-                                                    <td colSpan={4} className="text-center py-4">出発地点のデータがありません</td>
+                                                    <td colSpan={4} className="text-center py-4">請求データがありません</td>
                                                 </tr>
                                             )}
                                             </tbody>

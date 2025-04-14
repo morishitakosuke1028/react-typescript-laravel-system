@@ -33,6 +33,8 @@ class StoreClaimRequest extends FormRequest
             'm_unit_price_id' => ['required', 'integer', 'min:1'],
             'workday' => ['nullable', 'date'],
             'worktime' => ['nullable', 'date_format:Y-m-d H:i:s'],
+            'name' => ['required', 'string', 'max:50'],
+            'customer_contact' => ['required', 'string', 'max:255'],
         ];
     }
 }

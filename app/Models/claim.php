@@ -13,7 +13,7 @@ class Claim extends Model
     protected $fillable = [
         'm_point_departure_id',
         'other_point_departure_address',
-        'local_address'
+        'local_address',
         'arrival_point_address',
         'transportation_image',
         'price',
@@ -22,6 +22,8 @@ class Claim extends Model
         'm_unit_price_id',
         'workday',
         'worktime',
+        'name',
+        'customer_contact',
     ];
 
     public static function createClaim(array $attributes)
