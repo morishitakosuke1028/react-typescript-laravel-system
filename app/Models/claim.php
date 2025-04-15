@@ -35,4 +35,9 @@ class Claim extends Model
     {
         $this->fill($data)->save();
     }
+
+    public function insuranceCompany()
+    {
+        return $this->belongsTo(MInsuranceCompany::class, 'm_insurance_company_id');
+    }
 }

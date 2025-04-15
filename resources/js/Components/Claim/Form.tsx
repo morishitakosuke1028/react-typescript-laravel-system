@@ -1,6 +1,21 @@
 import React from "react";
 import { useForm } from "@inertiajs/react";
 
+type MPointDeparture = {
+    id: number;
+    point_departure_name: string;
+};
+
+type MInsuranceCompany = {
+    id: number;
+    insurance_company_name: string;
+};
+
+type MUnitPrice = {
+    id: number;
+    unit_price_name: string;
+};
+
 type Props = {
     isEdit?: boolean;
     claim?: {
@@ -18,9 +33,19 @@ type Props = {
         worktime: string | null;
     } | null;
     onSuccess?: () => void;
+    pointDepartures: MPointDeparture[];
+    insuranceCompanies: MInsuranceCompany[];
+    unitPrices: MUnitPrice[];
 };
 
-export default function Form({ isEdit = false, claim = null, onSuccess }: Props) {
+export default function Form({
+    isEdit = false,
+    claim = null,
+    onSuccess,
+    pointDepartures,
+    insuranceCompanies,
+    unitPrices
+    }: Props) {
     const { data, setData, post, put, processing, errors } = useForm({
         m_point_departure_id: claim?.m_point_departure_id ?? '',
         other_point_departure_address: claim?.other_point_departure_address ?? '',
@@ -35,8 +60,11 @@ export default function Form({ isEdit = false, claim = null, onSuccess }: Props)
         worktime: claim?.worktime ?? '',
     });
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setData(e.target.name as keyof typeof data, e.target.value);
+    const handleChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    ) => {
+        const { name, value } = e.target;
+        setData(name as keyof typeof data, value);
     };
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -70,20 +98,24 @@ export default function Form({ isEdit = false, claim = null, onSuccess }: Props)
                     <div className="flex flex-wrap -m-2">
                         {/* 出発地点 */}
                         <div className="p-2 w-full">
-                            <label htmlFor="m_point_departure_id" className="leading-7 text-sm text-gray-600">
-                                出発地点<span className="text-red-500 ml-1">*</span>
+                            <label htmlFor="m_point_departure_id" className="text-sm text-gray-600">
+                                出発地点（選択）
                             </label>
-                            <input
-                                type="text"
+                            <select
                                 id="m_point_departure_id"
                                 name="m_point_departure_id"
                                 value={data.m_point_departure_id}
                                 onChange={handleChange}
                                 className="w-full border border-gray-300 rounded px-3 py-2"
-                            />
-                            {errors.m_point_departure_id && (
-                                <div className="mt-2 text-red-500 text-xs">{errors.m_point_departure_id}</div>
-                            )}
+                            >
+                                <option value="">選択してください</option>
+                                {pointDepartures.map((departure) => (
+                                    <option key={departure.id} value={departure.id}>
+                                        {departure.point_departure_name}
+                                    </option>
+                                ))}
+                            </select>
+                            {errors.m_point_departure_id && <div className="mt-2 text-red-500 text-xs">{errors.m_point_departure_id}</div>}
                         </div>
 
                         {/* その他出発地点住所*/}

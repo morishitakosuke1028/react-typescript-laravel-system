@@ -2,6 +2,11 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import Pagination from '@/Components/Pagination';
 import { Head, Link } from '@inertiajs/react';
 
+type InsuranceCompany = {
+    id: number;
+    insurance_company_name: string;
+};
+
 type Claim = {
     id: number;
     m_point_departure_id: number;
@@ -17,6 +22,7 @@ type Claim = {
     worktime: string | null;
     name: string;
     customer_contact: string;
+    insurance_company?: InsuranceCompany;
 };
 
 type PaginationLink = {
@@ -83,7 +89,7 @@ export default function Index({ claims }: Props) {
                                                         <td className="px-4 py-3">{claim.id}</td>
                                                         <td className="px-4 py-3">{claim.name}</td>
                                                         <td className="px-4 py-3">{claim.customer_contact}</td>
-                                                        <td className="px-4 py-3">{claim.m_insurance_company_id}</td>
+                                                        <td className="px-4 py-3">{claim.insurance_company?.insurance_company_name ?? ''}</td>
                                                         <td className="px-4 py-3">
                                                             <Link
                                                                 as="button"

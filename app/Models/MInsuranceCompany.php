@@ -28,4 +28,9 @@ class MInsuranceCompany extends Model
     {
         $this->fill($data)->save();
     }
+
+    public function claims()
+    {
+        return $this->hasMany(Claim::class, 'm_insurance_company_id');
+    }
 }

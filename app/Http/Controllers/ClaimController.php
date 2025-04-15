@@ -14,7 +14,7 @@ class ClaimController extends Controller
      */
     public function index()
     {
-        $claims = Claim::paginate(10);
+        $claims = Claim::with('insuranceCompany')->paginate(10);
 
         return Inertia::render('Claim/Index', [
             'claims' => $claims
