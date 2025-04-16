@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreClaimRequest;
 use App\Http\Requests\UpdateClaimRequest;
 use App\Models\Claim;
+use App\Models\MUnitPrice;
+use App\Models\MPointDeparture;
+use App\Models\MInsuranceCompany;
 use Inertia\Inertia;
 
 class ClaimController extends Controller
@@ -26,7 +29,11 @@ class ClaimController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Claim/Create');
+        return Inertia::render('Claim/Create', [
+            'pointDepartures' => MPointDeparture::all(),
+            'insuranceCompanies' => MInsuranceCompany::all(),
+            'unitPrices' => MUnitPrice::all(),
+        ]);
     }
 
     /**

@@ -4,6 +4,7 @@ import { useForm } from "@inertiajs/react";
 type MPointDeparture = {
     id: number;
     point_departure_name: string;
+    address: string;
 };
 
 type MInsuranceCompany = {
@@ -178,12 +179,12 @@ export default function Form({
                                 搬送画像
                             </label>
                             <input
-                                type="text"
+                                type="file"
                                 id="transportation_image"
                                 name="transportation_image"
                                 value={data.transportation_image}
                                 onChange={handleChange}
-                                className="w-full border border-gray-300 rounded px-3 py-2"
+                                className="w-full px-3 py-2"
                             />
                             {errors.transportation_image && (
                                 <div className="mt-2 text-red-500 text-xs">{errors.transportation_image}</div>
@@ -195,14 +196,20 @@ export default function Form({
                             <label htmlFor="m_unit_price_id" className="leading-7 text-sm text-gray-600">
                                 単価
                             </label>
-                            <input
-                                type="text"
+                            <select
                                 id="m_unit_price_id"
                                 name="m_unit_price_id"
                                 value={data.m_unit_price_id}
                                 onChange={handleChange}
                                 className="w-full border border-gray-300 rounded px-3 py-2"
-                            />
+                            >
+                                <option value="">選択してください</option>
+                                {unitPrices.map((unitPrice) => (
+                                    <option key={unitPrice.id} value={unitPrice.id}>
+                                        {unitPrice.unit_price_name}
+                                    </option>
+                                ))}
+                            </select>
                             {errors.m_unit_price_id && (
                                 <div className="mt-2 text-red-500 text-xs">{errors.m_unit_price_id}</div>
                             )}
@@ -231,19 +238,24 @@ export default function Form({
                             <label htmlFor="m_insurance_company_id" className="leading-7 text-sm text-gray-600">
                                 保険会社
                             </label>
-                            <input
-                                type="text"
+                            <select
                                 id="m_insurance_company_id"
                                 name="m_insurance_company_id"
                                 value={data.m_insurance_company_id}
                                 onChange={handleChange}
                                 className="w-full border border-gray-300 rounded px-3 py-2"
-                            />
+                            >
+                                <option value="">選択してください</option>
+                                {insuranceCompanies.map((company) => (
+                                    <option key={company.id} value={company.id}>
+                                        {company.insurance_company_name}
+                                    </option>
+                                ))}
+                            </select>
                             {errors.m_insurance_company_id && (
                                 <div className="mt-2 text-red-500 text-xs">{errors.m_insurance_company_id}</div>
                             )}
                         </div>
-
                         {/* 作業日*/}
                         <div className="p-2 w-full">
                             <label htmlFor="workday" className="leading-7 text-sm text-gray-600">
@@ -285,14 +297,17 @@ export default function Form({
                             <label htmlFor="status" className="leading-7 text-sm text-gray-600">
                                 ステータス
                             </label>
-                            <input
-                                type="text"
+                            <select
                                 id="status"
                                 name="status"
                                 value={data.status}
                                 onChange={handleChange}
                                 className="w-full border border-gray-300 rounded px-3 py-2"
-                            />
+                            >
+                                <option value="">選択してください</option>
+                                <option value="1">一時保存</option>
+                                <option value="0">完了</option>
+                            </select>
                             {errors.status && (
                                 <div className="mt-2 text-red-500 text-xs">{errors.status}</div>
                             )}
