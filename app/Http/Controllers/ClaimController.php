@@ -41,15 +41,28 @@ class ClaimController extends Controller
      */
     public function store(StoreClaimRequest $request)
     {
-        //
-    }
+        Claim::createClaim(
+            $request->only([
+                'm_point_departure_id',
+                'other_point_departure_address',
+                'local_address',
+                'arrival_point_address',
+                'transportation_image',
+                'price',
+                'm_insurance_company_id',
+                'status',
+                'm_unit_price_id',
+                'workday',
+                'worktime',
+                'name',
+                'customer_contact'
+            ])
+        );
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Claim $claim)
-    {
-        //
+        return to_route('Claims.index')->with([
+            'message' => '登録しました。',
+            'status' => 'success',
+        ]);
     }
 
     /**

@@ -5,6 +5,7 @@ import ClaimForm from "@/Components/Claim/Form";
 type MPointDeparture = {
     id: number;
     point_departure_name: string;
+    address: string;
 };
 
 type MInsuranceCompany = {

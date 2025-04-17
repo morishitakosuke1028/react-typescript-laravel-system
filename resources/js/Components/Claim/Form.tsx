@@ -21,6 +21,8 @@ type Props = {
     isEdit?: boolean;
     claim?: {
         id: number;
+        name: string;
+        customer_contact: string;
         m_point_departure_id: number;
         other_point_departure_address: string;
         local_address: string;
@@ -48,6 +50,8 @@ export default function Form({
     unitPrices
     }: Props) {
     const { data, setData, post, put, processing, errors } = useForm({
+        name: claim?.name ?? '',
+        customer_contact: claim?.customer_contact ?? '',
         m_point_departure_id: claim?.m_point_departure_id ?? '',
         other_point_departure_address: claim?.other_point_departure_address ?? '',
         local_address: claim?.local_address ?? '',
@@ -58,7 +62,8 @@ export default function Form({
         status: claim?.status ?? '',
         m_unit_price_id: claim?.m_unit_price_id ?? '',
         workday: claim?.workday ?? '',
-        worktime: claim?.worktime ?? '',
+        worktime_raw: claim?.worktime?.slice(11, 16) ?? '',
+        worktime: '',
     });
 
     const handleChange = (
@@ -66,6 +71,15 @@ export default function Form({
     ) => {
         const { name, value } = e.target;
         setData(name as keyof typeof data, value);
+
+        if (name === 'workday' || name === 'worktime_raw') {
+            const day = name === 'workday' ? value : data.workday;
+            const time = name === 'worktime_raw' ? value : data.worktime_raw;
+
+            if (day && time) {
+                setData('worktime', `${day} ${time}:00`);
+            }
+        }
     };
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -97,6 +111,42 @@ export default function Form({
             <div className="container px-5 py-8 mx-auto">
                 <div className="lg:w-1/2 md:w-2/3 mx-auto">
                     <div className="flex flex-wrap -m-2">
+                        {/* 顧客名*/}
+                        <div className="p-2 w-full">
+                            <label htmlFor="name" className="leading-7 text-sm text-gray-600">
+                                顧客名
+                            </label>
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                value={data.name}
+                                onChange={handleChange}
+                                className="w-full border border-gray-300 rounded px-3 py-2"
+                            />
+                            {errors.name && (
+                                <div className="mt-2 text-red-500 text-xs">{errors.name}</div>
+                            )}
+                        </div>
+
+                        {/* 顧客連絡先*/}
+                        <div className="p-2 w-full">
+                            <label htmlFor="customer_contact" className="leading-7 text-sm text-gray-600">
+                                顧客連絡先
+                            </label>
+                            <input
+                                type="text"
+                                id="customer_contact"
+                                name="customer_contact"
+                                value={data.customer_contact}
+                                onChange={handleChange}
+                                className="w-full border border-gray-300 rounded px-3 py-2"
+                            />
+                            {errors.customer_contact && (
+                                <div className="mt-2 text-red-500 text-xs">{errors.customer_contact}</div>
+                            )}
+                        </div>
+
                         {/* 出発地点 */}
                         <div className="p-2 w-full">
                             <label htmlFor="m_point_departure_id" className="text-sm text-gray-600">
@@ -276,14 +326,14 @@ export default function Form({
 
                         {/* 作業時分*/}
                         <div className="p-2 w-full">
-                            <label htmlFor="worktime" className="leading-7 text-sm text-gray-600">
+                            <label htmlFor="worktime_raw" className="leading-7 text-sm text-gray-600">
                                 作業　時：　分
                             </label>
                             <input
                                 type="time"
-                                id="worktime"
-                                name="worktime"
-                                value={data.worktime}
+                                id="worktime_raw"
+                                name="worktime_raw"
+                                value={data.worktime_raw}
                                 onChange={handleChange}
                                 className="w-full border border-gray-300 rounded px-3 py-2"
                             />
