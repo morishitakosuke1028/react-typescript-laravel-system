@@ -66,11 +66,45 @@ class ClaimController extends Controller
     }
 
     /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Claim $claim)
+    {
+        return Inertia::render('Claim/Edit', [
+            'claim' => $claim,
+            'pointDepartures' => MPointDeparture::all(),
+            'insuranceCompanies' => MInsuranceCompany::all(),
+            'unitPrices' => MUnitPrice::all(),
+        ]);
+    }
+
+    /**
      * Update the specified resource in storage.
      */
     public function update(UpdateClaimRequest $request, Claim $claim)
     {
-        //
+        $claim->updateClaim(
+            $request->only([
+                'm_point_departure_id',
+                'other_point_departure_address',
+                'local_address',
+                'arrival_point_address',
+                'transportation_image',
+                'price',
+                'm_insurance_company_id',
+                'status',
+                'm_unit_price_id',
+                'workday',
+                'worktime',
+                'name',
+                'customer_contact'
+            ])
+        );
+
+        return to_route('Claims.index')->with([
+            'message' => '登録しました。',
+            'status' => 'success',
+        ]);
     }
 
     /**

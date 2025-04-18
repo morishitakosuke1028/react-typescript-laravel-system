@@ -63,7 +63,7 @@ export default function Form({
         m_unit_price_id: claim?.m_unit_price_id ?? '',
         workday: claim?.workday ?? '',
         worktime_raw: claim?.worktime?.slice(11, 16) ?? '',
-        worktime: '',
+        worktime: claim?.worktime ?? '',
     });
 
     const handleChange = (
