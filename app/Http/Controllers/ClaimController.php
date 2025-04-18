@@ -112,6 +112,11 @@ class ClaimController extends Controller
      */
     public function destroy(Claim $claim)
     {
-        //
+        $claim->delete();
+        return to_route('Claims.index')
+        ->with([
+            'message' => '削除しました。',
+            'status' => 'danger',
+        ]);
     }
 }
