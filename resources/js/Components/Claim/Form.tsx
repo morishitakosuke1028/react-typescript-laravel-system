@@ -1,5 +1,10 @@
 import React from "react";
-import { useForm } from "@inertiajs/react";
+import { useForm, usePage } from "@inertiajs/react";
+import type { PageProps as InertiaPageProps } from '@inertiajs/core';
+
+type CustomPageProps = InertiaPageProps & {
+    googleMapsApiKey: string;
+};
 
 type MPointDeparture = {
     id: number;
@@ -65,6 +70,40 @@ export default function Form({
         worktime_raw: claim?.worktime?.slice(11, 16) ?? '',
         worktime: claim?.worktime ?? '',
     });
+
+    const { props: page } = usePage<CustomPageProps>();
+
+    const googleMapsApiKey = page.googleMapsApiKey;
+
+    const getPointDepartureAddress = (id: number): string | null => {
+        const found = pointDepartures.find(p => p.id === Number(id));
+        return found?.address ?? null;
+    };
+
+    const fetchDistance = async () => {
+        const origin = data.other_point_departure_address || getPointDepartureAddress(Number(data.m_point_departure_id));
+        const destination = data.local_address;
+
+        if (!origin || !destination) return;
+
+        const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${encodeURIComponent(origin)}&destinations=${encodeURIComponent(destination)}&key=${googleMapsApiKey}&language=ja`;
+
+        try {
+            const response = await fetch(url);
+            const result = await response.json();
+
+            if (result.status === 'OK') {
+                const distance = result.rows[0].elements[0].distance.text;
+                alert(`距離: ${distance}`);
+            } else {
+                console.error(result);
+                alert('距離の取得に失敗しました');
+            }
+        } catch (error) {
+            console.error(error);
+            alert('API通信に失敗しました');
+        }
+    };
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -221,6 +260,16 @@ export default function Form({
                             {errors.arrival_point_address && (
                                 <div className="mt-2 text-red-500 text-xs">{errors.arrival_point_address}</div>
                             )}
+                        </div>
+
+                        <div className="p-2 w-full text-right">
+                            <button
+                                type="button"
+                                onClick={fetchDistance}
+                                className="text-white bg-green-500 hover:bg-green-600 px-4 py-2 rounded"
+                            >
+                                距離を取得
+                            </button>
                         </div>
 
                         {/* 搬送画像*/}
