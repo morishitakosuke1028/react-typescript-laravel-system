@@ -1,10 +1,5 @@
 import React from "react";
-import { useForm, usePage } from "@inertiajs/react";
-import type { PageProps as InertiaPageProps } from '@inertiajs/core';
-
-type CustomPageProps = InertiaPageProps & {
-    googleMapsApiKey: string;
-};
+import { useForm } from "@inertiajs/react";
 
 type MPointDeparture = {
     id: number;
@@ -71,10 +66,6 @@ export default function Form({
         worktime: claim?.worktime ?? '',
     });
 
-    const { props: page } = usePage<CustomPageProps>();
-
-    const googleMapsApiKey = page.googleMapsApiKey;
-
     const getPointDepartureAddress = (id: number): string | null => {
         const found = pointDepartures.find(p => p.id === Number(id));
         return found?.address ?? null;
@@ -86,18 +77,16 @@ export default function Form({
 
         if (!origin || !destination) return;
 
-        const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${encodeURIComponent(origin)}&destinations=${encodeURIComponent(destination)}&key=${googleMapsApiKey}&language=ja`;
-
         try {
-            const response = await fetch(url);
+            const response = await fetch(`/claims/distance?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}`);
             const result = await response.json();
 
             if (result.status === 'OK') {
                 const distance = result.rows[0].elements[0].distance.text;
                 alert(`距離: ${distance}`);
             } else {
-                console.error(result);
                 alert('距離の取得に失敗しました');
+                console.error(result);
             }
         } catch (error) {
             console.error(error);

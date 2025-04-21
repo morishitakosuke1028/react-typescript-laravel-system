@@ -9,6 +9,8 @@ use App\Models\MUnitPrice;
 use App\Models\MPointDeparture;
 use App\Models\MInsuranceCompany;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class ClaimController extends Controller
 {
@@ -118,5 +120,26 @@ class ClaimController extends Controller
             'message' => '削除しました。',
             'status' => 'danger',
         ]);
+    }
+
+    public function fetchDistance(Request $request)
+    {
+        $origin = $request->input('origin');
+        $destination = $request->input('destination');
+
+        if (!$origin || !$destination) {
+            return response()->json(['error' => '出発地と目的地を指定してください'], 400);
+        }
+
+        $apiKey = config('services.google.maps_api_key');
+
+        $response = Http::get('https://maps.googleapis.com/maps/api/distancematrix/json', [
+            'origins' => $origin,
+            'destinations' => $destination,
+            'key' => $apiKey,
+            'language' => 'ja',
+        ]);
+
+        return response()->json($response->json());
     }
 }

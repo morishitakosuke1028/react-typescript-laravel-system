@@ -51,6 +51,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/claims/{claim}/edit', [ClaimController::class, 'edit'])->name('Claims.edit');
     Route::put('/claims/{claim}', [ClaimController::class, 'update'])->name('Claims.update');
     Route::delete('/claims/{claim}', [ClaimController::class, 'destroy'])->name('Claims.destroy');
+    Route::get('/claims/distance', [ClaimController::class, 'fetchDistance']);
 });
 
 require __DIR__.'/auth.php';
