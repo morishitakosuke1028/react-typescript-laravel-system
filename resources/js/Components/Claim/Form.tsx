@@ -1,5 +1,5 @@
 import React from "react";
-import { useForm } from "@inertiajs/react";
+import { useForm, usePage } from "@inertiajs/react";
 
 type MPointDeparture = {
     id: number;
@@ -65,6 +65,10 @@ export default function Form({
         worktime_raw: claim?.worktime?.slice(11, 16) ?? '',
         worktime: claim?.worktime ?? '',
     });
+
+    const { props: page } = usePage<{ googleMapsApiKey: string }>();
+
+    console.log("API KEY:", page.googleMapsApiKey);
 
     const getPointDepartureAddress = (id: number): string | null => {
         const found = pointDepartures.find(p => p.id === Number(id));

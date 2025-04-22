@@ -35,6 +35,7 @@ class ClaimController extends Controller
             'pointDepartures' => MPointDeparture::all(),
             'insuranceCompanies' => MInsuranceCompany::all(),
             'unitPrices' => MUnitPrice::all(),
+            'googleMapsApiKey' => config('services.google_maps.api_key'),
         ]);
     }
 
@@ -131,7 +132,7 @@ class ClaimController extends Controller
             return response()->json(['error' => '出発地と目的地を指定してください'], 400);
         }
 
-        $apiKey = config('services.google.maps_api_key');
+        $apiKey = config('services.google_maps.api_key');
 
         $response = Http::get('https://maps.googleapis.com/maps/api/distancematrix/json', [
             'origins' => $origin,
