@@ -1,5 +1,5 @@
 import React from "react";
-import { useForm, usePage } from "@inertiajs/react";
+import { useForm } from "@inertiajs/react";
 
 type MPointDeparture = {
     id: number;
@@ -66,10 +66,6 @@ export default function Form({
         worktime: claim?.worktime ?? '',
     });
 
-    const { props: page } = usePage<{ googleMapsApiKey: string }>();
-
-    console.log("API KEY:", page.googleMapsApiKey);
-
     const getPointDepartureAddress = (id: number): string | null => {
         const found = pointDepartures.find(p => p.id === Number(id));
         return found?.address ?? null;
@@ -77,20 +73,30 @@ export default function Form({
 
     const fetchDistance = async () => {
         const origin = data.other_point_departure_address || getPointDepartureAddress(Number(data.m_point_departure_id));
-        const destination = data.local_address;
+        const waypoint = data.local_address;
+        const destination = data.arrival_point_address;
 
-        if (!origin || !destination) return;
+        if (!origin || !waypoint || !destination) {
+            alert("すべての地点を入力してください。");
+            return;
+        }
 
         try {
-            const response = await fetch(`/claims/distance?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}`);
-            const result = await response.json();
+            // 出発地点 → 現地住所 の距離
+            const res1 = await fetch(`/claims/distance?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(waypoint)}`);
+            const result1 = await res1.json();
 
-            if (result.status === 'OK') {
-                const distance = result.rows[0].elements[0].distance.text;
-                alert(`距離: ${distance}`);
+            // 現地住所 → 到着地点住所 の距離
+            const res2 = await fetch(`/claims/distance?origin=${encodeURIComponent(waypoint)}&destination=${encodeURIComponent(destination)}`);
+            const result2 = await res2.json();
+
+            if (result1.status === 'OK' && result2.status === 'OK') {
+                const distance1 = result1.rows[0].elements[0].distance.text;
+                const distance2 = result2.rows[0].elements[0].distance.text;
+                alert(`出発地点 → 現地住所: ${distance1}\n現地住所 → 到着地点: ${distance2}`);
             } else {
+                console.error({ result1, result2 });
                 alert('距離の取得に失敗しました');
-                console.error(result);
             }
         } catch (error) {
             console.error(error);
@@ -255,34 +261,6 @@ export default function Form({
                             )}
                         </div>
 
-                        <div className="p-2 w-full text-right">
-                            <button
-                                type="button"
-                                onClick={fetchDistance}
-                                className="text-white bg-green-500 hover:bg-green-600 px-4 py-2 rounded"
-                            >
-                                距離を取得
-                            </button>
-                        </div>
-
-                        {/* 搬送画像*/}
-                        <div className="p-2 w-full">
-                            <label htmlFor="transportation_image" className="leading-7 text-sm text-gray-600">
-                                搬送画像
-                            </label>
-                            <input
-                                type="file"
-                                id="transportation_image"
-                                name="transportation_image"
-                                value={data.transportation_image}
-                                onChange={handleChange}
-                                className="w-full px-3 py-2"
-                            />
-                            {errors.transportation_image && (
-                                <div className="mt-2 text-red-500 text-xs">{errors.transportation_image}</div>
-                            )}
-                        </div>
-
                         {/* 単価*/}
                         <div className="p-2 w-full">
                             <label htmlFor="m_unit_price_id" className="leading-7 text-sm text-gray-600">
@@ -310,7 +288,7 @@ export default function Form({
                         {/* 料金*/}
                         <div className="p-2 w-full">
                             <label htmlFor="price" className="leading-7 text-sm text-gray-600">
-                                料金
+                                料金（自動入力）
                             </label>
                             <input
                                 type="text"
@@ -322,6 +300,34 @@ export default function Form({
                             />
                             {errors.price && (
                                 <div className="mt-2 text-red-500 text-xs">{errors.price}</div>
+                            )}
+                        </div>
+
+                        <div className="p-2 w-full text-right">
+                            <button
+                                type="button"
+                                onClick={fetchDistance}
+                                className="text-white bg-green-500 hover:bg-green-600 px-4 py-2 rounded"
+                            >
+                                距離を取得
+                            </button>
+                        </div>
+
+                        {/* 搬送画像*/}
+                        <div className="p-2 w-full">
+                            <label htmlFor="transportation_image" className="leading-7 text-sm text-gray-600">
+                                搬送画像
+                            </label>
+                            <input
+                                type="file"
+                                id="transportation_image"
+                                name="transportation_image"
+                                value={data.transportation_image}
+                                onChange={handleChange}
+                                className="w-full px-3 py-2"
+                            />
+                            {errors.transportation_image && (
+                                <div className="mt-2 text-red-500 text-xs">{errors.transportation_image}</div>
                             )}
                         </div>
 
