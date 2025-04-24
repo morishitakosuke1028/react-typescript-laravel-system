@@ -33,6 +33,7 @@ type MInsuranceCompany = {
 type MUnitPrice = {
     id: number;
     unit_price_name: string;
+    km_unit_price: number;
 };
 
 type Props = {

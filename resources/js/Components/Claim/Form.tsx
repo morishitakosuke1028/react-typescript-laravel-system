@@ -15,6 +15,7 @@ type MInsuranceCompany = {
 type MUnitPrice = {
     id: number;
     unit_price_name: string;
+    km_unit_price: number;
 };
 
 type Props = {
@@ -76,28 +77,67 @@ export default function Form({
         const waypoint = data.local_address;
         const destination = data.arrival_point_address;
 
-        if (!origin || !waypoint || !destination) {
-            alert("すべての地点を入力してください。");
+        if (!origin || !waypoint) {
+            alert("出発地点または現地住所が未入力です。");
             return;
         }
 
+        if (!data.m_unit_price_id) {
+            alert("単価を選択してください。");
+            return;
+        }
+
+
         try {
-            // 出発地点 → 現地住所 の距離
+            // 出発地点 → 現地住所
             const res1 = await fetch(`/claims/distance?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(waypoint)}`);
             const result1 = await res1.json();
 
-            // 現地住所 → 到着地点住所 の距離
-            const res2 = await fetch(`/claims/distance?origin=${encodeURIComponent(waypoint)}&destination=${encodeURIComponent(destination)}`);
-            const result2 = await res2.json();
+            let totalKm = 0;
+            let messages = [];
 
-            if (result1.status === 'OK' && result2.status === 'OK') {
-                const distance1 = result1.rows[0].elements[0].distance.text;
-                const distance2 = result2.rows[0].elements[0].distance.text;
-                alert(`出発地点 → 現地住所: ${distance1}\n現地住所 → 到着地点: ${distance2}`);
+            const parseKm = (text: string): number => {
+                const km = parseFloat(text.replace(' km', '').replace(',', ''));
+                return isNaN(km) ? 0 : km;
+            };
+
+            if (result1.status === 'OK') {
+                const dist1 = result1.rows[0].elements[0].distance.text;
+                const km1 = parseKm(dist1);
+                totalKm += km1;
+                messages.push(`出発地点 → 現地: ${dist1}`);
             } else {
-                console.error({ result1, result2 });
-                alert('距離の取得に失敗しました');
+                alert("出発地点から現地住所までの距離取得に失敗しました");
+                return;
             }
+
+            if (destination) {
+                const res2 = await fetch(`/claims/distance?origin=${encodeURIComponent(waypoint)}&destination=${encodeURIComponent(destination)}`);
+                const result2 = await res2.json();
+
+                if (result2.status === 'OK') {
+                    const dist2 = result2.rows[0].elements[0].distance.text;
+                    const km2 = parseKm(dist2);
+                    totalKm += km2;
+                    messages.push(`現地住所 → 到着地点: ${dist2}`);
+                } else {
+                    alert("現地住所から到着地点住所までの距離取得に失敗しました");
+                    return;
+                }
+            }
+
+            // 単価取得
+            const selectedUnitPrice = unitPrices.find(p => p.id === Number(data.m_unit_price_id));
+            const pricePerKm = selectedUnitPrice?.km_unit_price ?? 0;
+            const totalPrice = Math.round(totalKm * pricePerKm);
+            setData('price', totalPrice.toString());
+
+            messages.push(`合計距離: ${totalKm.toFixed(1)} km`);
+            messages.push(`単価: ${pricePerKm}円/km`);
+            messages.push(`料金: ${totalPrice}円`);
+
+            alert(messages.join('\n'));
+
         } catch (error) {
             console.error(error);
             alert('API通信に失敗しました');
@@ -309,7 +349,7 @@ export default function Form({
                                 onClick={fetchDistance}
                                 className="text-white bg-green-500 hover:bg-green-600 px-4 py-2 rounded"
                             >
-                                距離を取得
+                                料金計算
                             </button>
                         </div>
 
