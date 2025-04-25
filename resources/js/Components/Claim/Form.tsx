@@ -362,7 +362,6 @@ export default function Form({
                                 type="file"
                                 id="transportation_image"
                                 name="transportation_image"
-                                value={data.transportation_image}
                                 onChange={handleChange}
                                 className="w-full px-3 py-2"
                             />
@@ -370,6 +369,19 @@ export default function Form({
                                 <div className="mt-2 text-red-500 text-xs">{errors.transportation_image}</div>
                             )}
                         </div>
+                        {/* 画像がある場合に表示（編集時のみ） */}
+                        {isEdit && claim?.transportation_image && (
+                            <div className="p-2 w-full">
+                                <label className="leading-7 text-sm text-gray-600">現在の画像</label>
+                                <div className="mt-1">
+                                    <img
+                                        src={`/storage/${claim.transportation_image}`}
+                                        alt="搬送画像"
+                                        className="max-w-full h-auto rounded border border-gray-300"
+                                    />
+                                </div>
+                            </div>
+                        )}
 
                         {/* 保険会社*/}
                         <div className="p-2 w-full">
