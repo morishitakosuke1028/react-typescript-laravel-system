@@ -28,7 +28,7 @@ type Props = {
         other_point_departure_address: string;
         local_address: string;
         arrival_point_address: string;
-        transportation_image: string;
+        transportation_image: string | File | null;
         price: number;
         m_insurance_company_id: number;
         status: number;
@@ -147,8 +147,13 @@ export default function Form({
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
     ) => {
-        const { name, value } = e.target;
-        setData(name as keyof typeof data, value);
+        const { name, type, files, value } = e.target as HTMLInputElement;
+
+        if (type === 'file' && files?.length) {
+            setData(name as keyof typeof data, files[0]);
+        } else {
+            setData(name as keyof typeof data, value);
+        }
 
         if (name === 'workday' || name === 'worktime_raw') {
             const day = name === 'workday' ? value : data.workday;
@@ -165,21 +170,15 @@ export default function Form({
 
         if (isEdit && claim) {
             put(`/claims/${claim.id}`, {
-                onSuccess: () => {
-                    if (onSuccess) onSuccess();
-                },
-                onError: (errors) => {
-                    console.error("バリデーションエラー:", errors);
-                }
+                forceFormData: true,
+                onSuccess: () => { if (onSuccess) onSuccess(); },
+                onError: (errors) => { console.error("バリデーションエラー:", errors); }
             });
         } else {
             post('/claims', {
-                onSuccess: () => {
-                    if (onSuccess) onSuccess();
-                },
-                onError: (errors) => {
-                    console.error("バリデーションエラー:", errors);
-                }
+                forceFormData: true,
+                onSuccess: () => { if (onSuccess) onSuccess(); },
+                onError: (errors) => { console.error("バリデーションエラー:", errors); }
             });
         }
     };

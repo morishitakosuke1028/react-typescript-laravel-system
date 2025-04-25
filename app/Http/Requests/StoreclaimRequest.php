@@ -26,7 +26,7 @@ class StoreClaimRequest extends FormRequest
             'other_point_departure_address' => ['nullable', 'string', 'max:255'],
             'local_address' => ['nullable', 'string', 'max:255'],
             'arrival_point_address' => ['nullable', 'string', 'max:255'],
-            'transportation_image' => ['nullable', 'string', 'max:255'],
+            'transportation_image' => ['nullable', 'file', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
             'price' => ['nullable', 'integer', 'min:0'],
             'm_insurance_company_id' => ['required', 'integer', 'min:1'],
             'status' => ['required', 'in:0,1'],

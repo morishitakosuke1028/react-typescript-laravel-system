@@ -28,6 +28,10 @@ class Claim extends Model
 
     public static function createClaim(array $attributes)
     {
+        if (isset($attributes['transportation_image']) && $attributes['transportation_image'] instanceof \Illuminate\Http\UploadedFile) {
+            $attributes['transportation_image'] = $attributes['transportation_image']->store('transportation_images', 'public');
+        }
+
         return self::create($attributes);
     }
 
