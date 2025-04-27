@@ -147,12 +147,13 @@ export default function Form({
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
     ) => {
-        const { name, type, files, value } = e.target as HTMLInputElement;
+        const target = e.target as HTMLInputElement;
+        const { name, type, value } = target;
 
-        if (type === 'file' && files?.length) {
-            setData(name as keyof typeof data, files[0]);
+        if (type === 'file' && target.files?.length) {
+            setData(name as keyof typeof data, target.files[0]);
         } else {
-            setData(name as keyof typeof data, value);
+            setData(name as keyof typeof data, target.value);
         }
 
         if (name === 'workday' || name === 'worktime_raw') {
@@ -168,18 +169,16 @@ export default function Form({
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
+        const submitOptions = {
+            forceFormData: true,
+            onSuccess: () => { if (onSuccess) onSuccess(); },
+            onError: (errors: any) => { console.error("バリデーションエラー:", errors); }
+        };
+
         if (isEdit && claim) {
-            put(`/claims/${claim.id}`, {
-                forceFormData: true,
-                onSuccess: () => { if (onSuccess) onSuccess(); },
-                onError: (errors) => { console.error("バリデーションエラー:", errors); }
-            });
+            put(`/claims/${claim.id}`, submitOptions);
         } else {
-            post('/claims', {
-                forceFormData: true,
-                onSuccess: () => { if (onSuccess) onSuccess(); },
-                onError: (errors) => { console.error("バリデーションエラー:", errors); }
-            });
+            post('/claims', submitOptions);
         }
     };
 

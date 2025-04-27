@@ -30,6 +30,8 @@ class Claim extends Model
     {
         if (isset($attributes['transportation_image']) && $attributes['transportation_image'] instanceof \Illuminate\Http\UploadedFile) {
             $attributes['transportation_image'] = $attributes['transportation_image']->store('transportation_images', 'public');
+        } else {
+            unset($attributes['transportation_image']);
         }
 
         return self::create($attributes);
