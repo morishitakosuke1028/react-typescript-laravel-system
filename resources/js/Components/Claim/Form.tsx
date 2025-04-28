@@ -155,30 +155,55 @@ export default function Form({
         } else {
             setData(name as keyof typeof data, target.value);
         }
+        // const { name, value } = e.target;
+        // setData(name as keyof typeof data, value);
 
-        if (name === 'workday' || name === 'worktime_raw') {
-            const day = name === 'workday' ? value : data.workday;
-            const time = name === 'worktime_raw' ? value : data.worktime_raw;
+        // if (name === 'workday' || name === 'worktime_raw') {
+        //     const day = name === 'workday' ? value : data.workday;
+        //     const time = name === 'worktime_raw' ? value : data.worktime_raw;
 
-            if (day && time) {
-                setData('worktime', `${day} ${time}:00`);
-            }
-        }
+        //     if (day && time) {
+        //         setData('worktime', `${day} ${time}:00`);
+        //     }
+        // }
     };
 
+    // const handleSubmit = (e: React.FormEvent) => {
+    //     e.preventDefault();
+
+    //     const submitOptions = {
+    //         forceFormData: true,
+    //         onSuccess: () => { if (onSuccess) onSuccess(); },
+    //         onError: (errors: any) => { console.error("バリデーションエラー:", errors); }
+    //     };
+
+    //     if (isEdit && claim) {
+    //         put(`/claims/${claim.id}`, submitOptions);
+    //     } else {
+    //         post('/claims', submitOptions);
+    //     }
+    // };
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        const submitOptions = {
-            forceFormData: true,
-            onSuccess: () => { if (onSuccess) onSuccess(); },
-            onError: (errors: any) => { console.error("バリデーションエラー:", errors); }
-        };
-
         if (isEdit && claim) {
-            put(`/claims/${claim.id}`, submitOptions);
+            put(`/claims/${claim.id}`, {
+                onSuccess: () => {
+                    if (onSuccess) onSuccess();
+                },
+                onError: (errors) => {
+                    console.error("バリデーションエラー:", errors);
+                }
+            });
         } else {
-            post('/claims', submitOptions);
+            post('/claims', {
+                onSuccess: () => {
+                    if (onSuccess) onSuccess();
+                },
+                onError: (errors) => {
+                    console.error("バリデーションエラー:", errors);
+                }
+            });
         }
     };
 
