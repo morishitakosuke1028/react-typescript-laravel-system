@@ -21,12 +21,11 @@ class UpdateClaimRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'm_point_departure_id' => ['nullable', 'integer', 'min:1'],
             'other_point_departure_address' => ['nullable', 'string', 'max:255'],
             'local_address' => ['nullable', 'string', 'max:255'],
             'arrival_point_address' => ['nullable', 'string', 'max:255'],
-            'transportation_image' => ['nullable', 'file', 'mimes:jpg,jpeg,png', 'max:2048'],
             'price' => ['nullable', 'integer', 'min:0'],
             'm_insurance_company_id' => ['required', 'integer', 'min:1'],
             'status' => ['required', 'in:0,1'],
@@ -36,5 +35,12 @@ class UpdateClaimRequest extends FormRequest
             'name' => ['required', 'string', 'max:50'],
             'customer_contact' => ['required', 'string', 'max:255'],
         ];
+
+        // ファイルがアップロードされた場合のみバリデーションを適用
+        if ($this->hasFile('transportation_image')) {
+            $rules['transportation_image'] = ['nullable', 'file', 'image', 'mimes:jpg,jpeg,png', 'max:2048'];
+        }
+
+        return $rules;
     }
 }
