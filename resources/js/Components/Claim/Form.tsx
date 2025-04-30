@@ -28,7 +28,8 @@ type Props = {
         other_point_departure_address: string;
         local_address: string;
         arrival_point_address: string;
-        transportation_image: string | File | null;
+        transportation_image: string | null;
+        new_transportation_image: File | null;
         price: number;
         m_insurance_company_id: number;
         status: number;
@@ -57,7 +58,8 @@ export default function Form({
         other_point_departure_address: claim?.other_point_departure_address ?? '',
         local_address: claim?.local_address ?? '',
         arrival_point_address: claim?.arrival_point_address ?? '',
-        transportation_image: claim?.transportation_image ?? '',
+        existing_transportation_image: claim?.transportation_image ?? '',
+        new_transportation_image: null as File | null,
         price: claim?.price ?? '',
         m_insurance_company_id: claim?.m_insurance_company_id ?? '',
         status: claim?.status ?? '',
@@ -147,71 +149,40 @@ export default function Form({
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
     ) => {
-        const target = e.target as HTMLInputElement;
-        const { name, type, value } = target;
+        const { name, value } = e.target;
+        setData(name as keyof typeof data, value);
 
-        if (type === 'file' && target.files?.length) {
-            setData(name as keyof typeof data, target.files[0]);
-        } else {
-            setData(name as keyof typeof data, target.value);
+        if (name === 'workday' || name === 'worktime_raw') {
+            const day = name === 'workday' ? value : data.workday;
+            const time = name === 'worktime_raw' ? value : data.worktime_raw;
+
+            if (day && time) {
+                setData('worktime', `${day} ${time}:00`);
+            }
         }
     };
-
-    // workdayとworktime_rawからworktimeを生成する関数
-    const updateWorktime = () => {
-        if (data.workday && data.worktime_raw) {
-            setData('worktime', `${data.workday} ${data.worktime_raw}:00`);
-        }
-    };
-
-    // workdayまたはworktime_rawが変更されたときにworktimeを更新
-    React.useEffect(() => {
-        updateWorktime();
-    }, [data.workday, data.worktime_raw]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        // 送信前にworktimeを最新の状態に更新
-        updateWorktime();
-
-        // 編集モードで画像が文字列（既存の画像パス）の場合の処理
-        const isExistingImage = isEdit && typeof data.transportation_image === 'string';
-
-        // 送信オプション
-        const submitOptions = {
-            forceFormData: true,
-            preserveState: true,
-            onSuccess: () => {
-                if (onSuccess) onSuccess();
-            },
-            onError: (errors: any) => {
-                console.error("バリデーションエラー:", errors);
-            }
-        };
-
-        // 編集モードの場合
         if (isEdit && claim) {
-            // 画像が文字列（既存の画像パス）の場合は、一時的に削除して送信
-            if (isExistingImage) {
-                // 既存の画像を維持する場合は、transportation_imageフィールドを削除
-                const dataWithoutImage = { ...data };
-                delete dataWithoutImage.transportation_image;
-
-                // デバッグ用：送信データを確認
-                console.log("送信データ (既存画像維持):", dataWithoutImage);
-
-                // PUT メソッドを使用して送信
-                put(`/claims/${claim.id}`, dataWithoutImage, submitOptions);
-            } else {
-                // 新しい画像が選択された場合は通常のフォーム送信
-                console.log("送信データ (新しい画像):", data);
-                put(`/claims/${claim.id}`, data, submitOptions);
-            }
+            put(`/claims/${claim.id}`, {
+                onSuccess: () => {
+                    if (onSuccess) onSuccess();
+                },
+                onError: (errors) => {
+                    console.error("バリデーションエラー:", errors);
+                }
+            });
         } else {
-            // 新規作成の場合
-            console.log("送信データ (新規作成):", data);
-            post('/claims', data, submitOptions);
+            post('/claims', {
+                onSuccess: () => {
+                    if (onSuccess) onSuccess();
+                },
+                onError: (errors) => {
+                    console.error("バリデーションエラー:", errors);
+                }
+            });
         }
     };
 
@@ -391,13 +362,15 @@ export default function Form({
                             </label>
                             <input
                                 type="file"
-                                id="transportation_image"
-                                name="transportation_image"
+                                id="new_transportation_image"
+                                name="new_transportation_image"
+                                // id="transportation_image"
+                                // name="transportation_image"
                                 onChange={handleChange}
                                 className="w-full px-3 py-2"
                             />
-                            {errors.transportation_image && (
-                                <div className="mt-2 text-red-500 text-xs">{errors.transportation_image}</div>
+                            {errors.new_transportation_image && (
+                                <div className="mt-2 text-red-500 text-xs">{errors.new_transportation_image}</div>
                             )}
                         </div>
                         {/* 画像がある場合に表示（編集時のみ） */}
@@ -406,7 +379,7 @@ export default function Form({
                                 <label className="leading-7 text-sm text-gray-600">現在の画像</label>
                                 <div className="mt-1">
                                     <img
-                                        src={`/storage/${claim.transportation_image}`}
+                                         src={`/storage/${claim.transportation_image}`}
                                         alt="搬送画像"
                                         className="max-w-full h-auto rounded border border-gray-300"
                                     />

@@ -37,8 +37,8 @@ class UpdateClaimRequest extends FormRequest
         ];
 
         // ファイルがアップロードされた場合のみバリデーションを適用
-        if ($this->hasFile('transportation_image')) {
-            $rules['transportation_image'] = ['nullable', 'file', 'image', 'mimes:jpg,jpeg,png', 'max:2048'];
+        if ($this->hasFile('new_transportation_image')) {
+            $rules['new_transportation_image'] = ['nullable', 'file', 'image', 'mimes:jpg,jpeg,png', 'max:2048'];
         }
 
         return $rules;

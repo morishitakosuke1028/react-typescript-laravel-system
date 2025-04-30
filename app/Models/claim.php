@@ -39,10 +39,10 @@ class Claim extends Model
 
     public function updateClaim(array $data): void
     {
-        if (isset($data['transportation_image']) && $data['transportation_image'] instanceof \Illuminate\Http\UploadedFile) {
-            $data['transportation_image'] = $data['transportation_image']->store('transportation_images', 'public');
-        } elseif (empty($data['transportation_image'])) {
-            unset($data['transportation_image']);
+        if (isset($data['new_transportation_image']) && $data['new_transportation_image'] instanceof \Illuminate\Http\UploadedFile) {
+            $data['new_transportation_image'] = $data['new_transportation_image']->store('transportation_images', 'public');
+        } elseif (empty($data['new_transportation_image'])) {
+            unset($data['new_transportation_image']);
         }
 
         $this->fill($data)->save();
