@@ -146,18 +146,38 @@ export default function Form({
         }
     };
 
+    // const handleChange = (
+    //     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    // ) => {
+    //     const { name, value } = e.target;
+    //     setData(name as keyof typeof data, value);
+
+    //     if (name === 'workday' || name === 'worktime_raw') {
+    //         const day = name === 'workday' ? value : data.workday;
+    //         const time = name === 'worktime_raw' ? value : data.worktime_raw;
+
+    //         if (day && time) {
+    //             setData('worktime', `${day} ${time}:00`);
+    //         }
+    //     }
+    // };
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
     ) => {
-        const { name, value } = e.target;
-        setData(name as keyof typeof data, value);
+        const { name, type, value, files } = e.target as HTMLInputElement;
 
-        if (name === 'workday' || name === 'worktime_raw') {
-            const day = name === 'workday' ? value : data.workday;
-            const time = name === 'worktime_raw' ? value : data.worktime_raw;
+        if (type === 'file') {
+            setData(name as keyof typeof data, files?.[0] ?? null);
+        } else {
+            setData(name as keyof typeof data, value);
 
-            if (day && time) {
-                setData('worktime', `${day} ${time}:00`);
+            if (name === 'workday' || name === 'worktime_raw') {
+                const day = name === 'workday' ? value : data.workday;
+                const time = name === 'worktime_raw' ? value : data.worktime_raw;
+
+                if (day && time) {
+                    setData('worktime', `${day} ${time}:00`);
+                }
             }
         }
     };
