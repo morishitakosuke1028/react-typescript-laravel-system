@@ -58,8 +58,13 @@ export default function Form({
         other_point_departure_address: claim?.other_point_departure_address ?? '',
         local_address: claim?.local_address ?? '',
         arrival_point_address: claim?.arrival_point_address ?? '',
+        // For existing image path
         existing_transportation_image: claim?.transportation_image ?? '',
-        new_transportation_image: null as File | null,
+        // For file upload - use different field names based on create/edit
+        ...(isEdit
+            ? { new_transportation_image: null as File | null }
+            : { transportation_image: null as File | null }
+        ),
         price: claim?.price ?? '',
         m_insurance_company_id: claim?.m_insurance_company_id ?? '',
         status: claim?.status ?? '',
@@ -146,38 +151,28 @@ export default function Form({
         }
     };
 
-    // const handleChange = (
-    //     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-    // ) => {
-    //     const { name, value } = e.target;
-    //     setData(name as keyof typeof data, value);
-
-    //     if (name === 'workday' || name === 'worktime_raw') {
-    //         const day = name === 'workday' ? value : data.workday;
-    //         const time = name === 'worktime_raw' ? value : data.worktime_raw;
-
-    //         if (day && time) {
-    //             setData('worktime', `${day} ${time}:00`);
-    //         }
-    //     }
-    // };
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
     ) => {
-        const { name, type, value, files } = e.target as HTMLInputElement;
+        const { name } = e.target;
 
-        if (type === 'file') {
-            setData(name as keyof typeof data, files?.[0] ?? null);
+        // Handle file inputs differently
+        if (e.target instanceof HTMLInputElement && e.target.type === 'file') {
+            const files = e.target.files;
+            if (files && files.length > 0) {
+                setData(name as keyof typeof data, files[0]);
+            }
         } else {
+            const value = e.target.value;
             setData(name as keyof typeof data, value);
+        }
 
-            if (name === 'workday' || name === 'worktime_raw') {
-                const day = name === 'workday' ? value : data.workday;
-                const time = name === 'worktime_raw' ? value : data.worktime_raw;
+        if (name === 'workday' || name === 'worktime_raw') {
+            const day = name === 'workday' ? e.target.value : data.workday;
+            const time = name === 'worktime_raw' ? e.target.value : data.worktime_raw;
 
-                if (day && time) {
-                    setData('worktime', `${day} ${time}:00`);
-                }
+            if (day && time) {
+                setData('worktime', `${day} ${time}:00`);
             }
         }
     };
@@ -377,21 +372,24 @@ export default function Form({
 
                         {/* 搬送画像*/}
                         <div className="p-2 w-full">
-                            <label htmlFor="transportation_image" className="leading-7 text-sm text-gray-600">
+                            <label htmlFor={isEdit ? "new_transportation_image" : "transportation_image"} className="leading-7 text-sm text-gray-600">
                                 搬送画像
                             </label>
                             <input
                                 type="file"
-                                id="new_transportation_image"
-                                name="new_transportation_image"
-                                // id="transportation_image"
-                                // name="transportation_image"
+                                id={isEdit ? "new_transportation_image" : "transportation_image"}
+                                name={isEdit ? "new_transportation_image" : "transportation_image"}
                                 onChange={handleChange}
                                 className="w-full px-3 py-2"
                             />
-                            {errors.new_transportation_image && (
-                                <div className="mt-2 text-red-500 text-xs">{errors.new_transportation_image}</div>
-                            )}
+                            {isEdit
+                                ? errors.new_transportation_image && (
+                                    <div className="mt-2 text-red-500 text-xs">{errors.new_transportation_image}</div>
+                                )
+                                : errors.transportation_image && (
+                                    <div className="mt-2 text-red-500 text-xs">{errors.transportation_image}</div>
+                                )
+                            }
                         </div>
                         {/* 画像がある場合に表示（編集時のみ） */}
                         {isEdit && claim?.transportation_image && (
