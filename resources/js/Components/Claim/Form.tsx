@@ -58,9 +58,7 @@ export default function Form({
         other_point_departure_address: claim?.other_point_departure_address ?? '',
         local_address: claim?.local_address ?? '',
         arrival_point_address: claim?.arrival_point_address ?? '',
-        // For existing image path
         existing_transportation_image: claim?.transportation_image ?? '',
-        // For file upload - use different field names based on create/edit
         ...(isEdit
             ? { new_transportation_image: null as File | null }
             : { transportation_image: null as File | null }
