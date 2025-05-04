@@ -39,9 +39,14 @@ class Claim extends Model
 
     public function updateClaim(array $data): void
     {
+        // Handle new image upload
         if (isset($data['new_transportation_image']) && $data['new_transportation_image'] instanceof \Illuminate\Http\UploadedFile) {
-            $data['new_transportation_image'] = $data['new_transportation_image']->store('transportation_images', 'public');
-        } elseif (empty($data['new_transportation_image'])) {
+            // Store the new image and update the transportation_image field
+            $data['transportation_image'] = $data['new_transportation_image']->store('transportation_images', 'public');
+            // Remove the temporary field
+            unset($data['new_transportation_image']);
+        } elseif (isset($data['new_transportation_image'])) {
+            // If it's set but not a file, remove it
             unset($data['new_transportation_image']);
         }
 

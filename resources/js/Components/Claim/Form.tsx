@@ -51,18 +51,17 @@ export default function Form({
     insuranceCompanies,
     unitPrices
     }: Props) {
-    const { data, setData, post, put, processing, errors } = useForm({
+    const { data, setData, post, processing, errors } = useForm({
         name: claim?.name ?? '',
         customer_contact: claim?.customer_contact ?? '',
         m_point_departure_id: claim?.m_point_departure_id ?? '',
         other_point_departure_address: claim?.other_point_departure_address ?? '',
         local_address: claim?.local_address ?? '',
         arrival_point_address: claim?.arrival_point_address ?? '',
-        existing_transportation_image: claim?.transportation_image ?? '',
-        ...(isEdit
-            ? { new_transportation_image: null as File | null }
-            : { transportation_image: null as File | null }
-        ),
+        // For existing image path
+        transportation_image: claim?.transportation_image ?? '',
+        // For file upload in edit mode
+        new_transportation_image: null as File | null,
         price: claim?.price ?? '',
         m_insurance_company_id: claim?.m_insurance_company_id ?? '',
         status: claim?.status ?? '',
@@ -70,6 +69,8 @@ export default function Form({
         workday: claim?.workday ?? '',
         worktime_raw: claim?.worktime?.slice(11, 16) ?? '',
         worktime: claim?.worktime ?? '',
+        // For PUT/PATCH requests with FormData
+        _method: isEdit ? 'put' : '',
     });
 
     const getPointDepartureAddress = (id: number): string | null => {
@@ -158,7 +159,12 @@ export default function Form({
         if (e.target instanceof HTMLInputElement && e.target.type === 'file') {
             const files = e.target.files;
             if (files && files.length > 0) {
-                setData(name as keyof typeof data, files[0]);
+                // For file inputs, we need to handle them differently
+                if (isEdit) {
+                    setData('new_transportation_image', files[0]);
+                } else {
+                    setData('transportation_image', files[0]);
+                }
             }
         } else {
             const value = e.target.value;
@@ -178,29 +184,64 @@ export default function Form({
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (isEdit && claim) {
-            put(`/claims/${claim.id}`, {
-                onSuccess: () => {
-                    if (onSuccess) onSuccess();
-                },
-                onError: (errors) => {
-                    console.error("バリデーションエラー:", errors);
-                }
-            });
-        } else {
-            post('/claims', {
-                onSuccess: () => {
-                    if (onSuccess) onSuccess();
-                },
-                onError: (errors) => {
-                    console.error("バリデーションエラー:", errors);
-                }
-            });
+        // Always use FormData for file uploads
+        const formData = new FormData();
+
+        // Add all regular fields with null checks
+        formData.append('name', data.name?.toString() || '');
+        formData.append('customer_contact', data.customer_contact?.toString() || '');
+        formData.append('m_point_departure_id', data.m_point_departure_id?.toString() || '');
+        formData.append('other_point_departure_address', data.other_point_departure_address?.toString() || '');
+        formData.append('local_address', data.local_address?.toString() || '');
+        formData.append('arrival_point_address', data.arrival_point_address?.toString() || '');
+        formData.append('price', data.price?.toString() || '');
+        formData.append('m_insurance_company_id', data.m_insurance_company_id?.toString() || '');
+        formData.append('status', data.status?.toString() || '');
+        formData.append('m_unit_price_id', data.m_unit_price_id?.toString() || '');
+        formData.append('workday', data.workday?.toString() || '');
+        formData.append('worktime', data.worktime?.toString() || '');
+
+        // Add the _method field for PUT requests
+        if (isEdit) {
+            formData.append('_method', 'put');
         }
+
+        // Handle image fields differently based on edit/create mode
+        if (isEdit) {
+            // For edit mode
+            if (data.new_transportation_image instanceof File) {
+                formData.append('new_transportation_image', data.new_transportation_image);
+            }
+
+            // Always include the existing image path
+            if (claim?.transportation_image) {
+                formData.append('transportation_image', claim.transportation_image);
+            }
+        } else {
+            // For create mode
+            if (data.transportation_image instanceof File) {
+                formData.append('transportation_image', data.transportation_image);
+            }
+        }
+
+        // Use post for both create and update (with _method for update)
+        const url = isEdit && claim ? `/claims/${claim.id}` : '/claims';
+        post(url, formData, {
+            onSuccess: () => {
+                if (onSuccess) onSuccess();
+            },
+            onError: (errors) => {
+                console.error("バリデーションエラー:", errors);
+            },
+            forceFormData: true,
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} encType="multipart/form-data">
             <div className="container px-5 py-8 mx-auto">
                 <div className="lg:w-1/2 md:w-2/3 mx-auto">
                     <div className="flex flex-wrap -m-2">
@@ -378,6 +419,7 @@ export default function Form({
                                 id={isEdit ? "new_transportation_image" : "transportation_image"}
                                 name={isEdit ? "new_transportation_image" : "transportation_image"}
                                 onChange={handleChange}
+                                accept="image/*"
                                 className="w-full px-3 py-2"
                             />
                             {isEdit
