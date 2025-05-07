@@ -58,9 +58,7 @@ export default function Form({
         other_point_departure_address: claim?.other_point_departure_address ?? '',
         local_address: claim?.local_address ?? '',
         arrival_point_address: claim?.arrival_point_address ?? '',
-        // For existing image path
-        transportation_image: claim?.transportation_image ?? '',
-        // For file upload in edit mode
+        transportation_image: null as File | string | null,
         new_transportation_image: null as File | null,
         price: claim?.price ?? '',
         m_insurance_company_id: claim?.m_insurance_company_id ?? '',
@@ -69,7 +67,7 @@ export default function Form({
         workday: claim?.workday ?? '',
         worktime_raw: claim?.worktime?.slice(11, 16) ?? '',
         worktime: claim?.worktime ?? '',
-        // For PUT/PATCH requests with FormData
+
         _method: isEdit ? 'put' : '',
     });
 
