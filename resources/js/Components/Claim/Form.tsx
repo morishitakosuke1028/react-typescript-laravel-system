@@ -58,7 +58,9 @@ export default function Form({
         other_point_departure_address: claim?.other_point_departure_address ?? '',
         local_address: claim?.local_address ?? '',
         arrival_point_address: claim?.arrival_point_address ?? '',
-        transportation_image: null as File | string | null,
+        transportation_image: claim?.transportation_image ?? '',
+        // transportation_image: null as File | string | null, // ← 修正
+        existing_transportation_image: claim?.transportation_image ?? '',
         new_transportation_image: null as File | null,
         price: claim?.price ?? '',
         m_insurance_company_id: claim?.m_insurance_company_id ?? '',
