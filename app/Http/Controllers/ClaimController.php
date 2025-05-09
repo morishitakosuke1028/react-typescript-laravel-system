@@ -50,6 +50,7 @@ class ClaimController extends Controller
                 'other_point_departure_address',
                 'local_address',
                 'arrival_point_address',
+                'new_transportation_image',
                 'transportation_image',
                 'price',
                 'm_insurance_company_id',

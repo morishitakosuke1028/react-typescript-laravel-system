@@ -59,8 +59,6 @@ export default function Form({
         local_address: claim?.local_address ?? '',
         arrival_point_address: claim?.arrival_point_address ?? '',
         transportation_image: claim?.transportation_image ?? '',
-        // transportation_image: null as File | string | null, // ← 修正
-        existing_transportation_image: claim?.transportation_image ?? '',
         new_transportation_image: null as File | null,
         price: claim?.price ?? '',
         m_insurance_company_id: claim?.m_insurance_company_id ?? '',
@@ -159,12 +157,7 @@ export default function Form({
         if (e.target instanceof HTMLInputElement && e.target.type === 'file') {
             const files = e.target.files;
             if (files && files.length > 0) {
-                // For file inputs, we need to handle them differently
-                if (isEdit) {
-                    setData('new_transportation_image', files[0]);
-                } else {
-                    setData('transportation_image', files[0]);
-                }
+                setData('new_transportation_image', files[0]);
             }
         } else {
             const value = e.target.value;
@@ -184,10 +177,8 @@ export default function Form({
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        // Always use FormData for file uploads
         const formData = new FormData();
 
-        // Add all regular fields with null checks
         formData.append('name', data.name?.toString() || '');
         formData.append('customer_contact', data.customer_contact?.toString() || '');
         formData.append('m_point_departure_id', data.m_point_departure_id?.toString() || '');
@@ -201,30 +192,24 @@ export default function Form({
         formData.append('workday', data.workday?.toString() || '');
         formData.append('worktime', data.worktime?.toString() || '');
 
-        // Add the _method field for PUT requests
         if (isEdit) {
             formData.append('_method', 'put');
         }
 
-        // Handle image fields differently based on edit/create mode
         if (isEdit) {
-            // For edit mode
             if (data.new_transportation_image instanceof File) {
                 formData.append('new_transportation_image', data.new_transportation_image);
             }
 
-            // Always include the existing image path
             if (claim?.transportation_image) {
                 formData.append('transportation_image', claim.transportation_image);
             }
         } else {
-            // For create mode
-            if (data.transportation_image instanceof File) {
-                formData.append('transportation_image', data.transportation_image);
+            if (data.new_transportation_image instanceof File) {
+                formData.append('new_transportation_image', data.new_transportation_image);
             }
         }
 
-        // Use post for both create and update (with _method for update)
         const url = isEdit && claim ? `/claims/${claim.id}` : '/claims';
         post(url, formData, {
             onSuccess: () => {
@@ -411,13 +396,13 @@ export default function Form({
 
                         {/* 搬送画像*/}
                         <div className="p-2 w-full">
-                            <label htmlFor={isEdit ? "new_transportation_image" : "transportation_image"} className="leading-7 text-sm text-gray-600">
+                            <label htmlFor="new_transportation_image" className="leading-7 text-sm text-gray-600">
                                 搬送画像
                             </label>
                             <input
                                 type="file"
-                                id={isEdit ? "new_transportation_image" : "transportation_image"}
-                                name={isEdit ? "new_transportation_image" : "transportation_image"}
+                                id="new_transportation_image"
+                                name="new_transportation_image"
                                 onChange={handleChange}
                                 accept="image/*"
                                 className="w-full px-3 py-2"
