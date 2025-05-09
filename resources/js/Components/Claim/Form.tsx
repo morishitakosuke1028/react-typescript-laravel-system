@@ -211,11 +211,11 @@ export default function Form({
         }
 
         const url = isEdit && claim ? `/claims/${claim.id}` : '/claims';
-        post(url, formData, {
+        post(url, {
             onSuccess: () => {
                 if (onSuccess) onSuccess();
             },
-            onError: (errors) => {
+            onError: (errors: Record<string, string>) => {
                 console.error("バリデーションエラー:", errors);
             },
             forceFormData: true,
