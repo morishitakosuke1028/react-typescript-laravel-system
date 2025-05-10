@@ -5,6 +5,7 @@ use App\Http\Controllers\MPointDepartureController;
 use App\Http\Controllers\MInsuranceCompanyController;
 use App\Http\Controllers\MUnitPriceController;
 use App\Http\Controllers\ClaimController;
+use App\Http\Controllers\RentalCarController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -52,6 +53,13 @@ Route::middleware('auth')->group(function () {
     Route::put('/claims/{claim}', [ClaimController::class, 'update'])->name('Claims.update');
     Route::delete('/claims/{claim}', [ClaimController::class, 'destroy'])->name('Claims.destroy');
     Route::get('/claims/distance', [ClaimController::class, 'fetchDistance']);
+    Route::get('/rental_cars', [RentalCarController::class, 'index'])->name('RentalCars.index');
+    Route::get('/rental_cars/create', [RentalCarController::class, 'create'])->name('RentalCars.create');
+    Route::post('/rental_cars/confirm', [RentalCarController::class, 'confirm'])->name('RentalCars.confirm');
+    Route::post('/rental_cars', [RentalCarController::class, 'store'])->name('RentalCars.store');
+    Route::get('/rental_cars/{rental_car}/edit', [RentalCarController::class, 'edit'])->name('RentalCars.edit');
+    Route::put('/rental_cars/{rental_car}', [RentalCarController::class, 'update'])->name('RentalCars.update');
+    Route::delete('/rental_cars/{rental_car}', [RentalCarController::class, 'destroy'])->name('RentalCars.destroy');
 });
 
 require __DIR__.'/auth.php';
