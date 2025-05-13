@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreRentalCarRequest;
 use App\Http\Requests\UpdateRentalCarRequest;
 use App\Models\RentalCar;
+use Inertia\Inertia;
 
 class RentalCarController extends Controller
 {
@@ -13,7 +14,11 @@ class RentalCarController extends Controller
      */
     public function index()
     {
-        //
+        $rental_car = RentalCar::paginate(10);
+
+        return Inertia::render('RentalCar/Index', [
+            'rental_cars' => $rental_cars
+        ]);
     }
 
     /**
