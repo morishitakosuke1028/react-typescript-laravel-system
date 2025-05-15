@@ -92,7 +92,7 @@ export default function Index({ rental_cars }: Props) {
                                                 ))
                                             ) : (
                                                 <tr>
-                                                    <td colSpan={4} className="text-center py-4">レンタカーのデータがありません</td>
+                                                    <td colSpan={5} className="text-center py-4">レンタカーのデータがありません</td>
                                                 </tr>
                                             )}
                                             </tbody>

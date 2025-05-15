@@ -26,6 +26,14 @@ class RentalCarController extends Controller
      */
     public function create()
     {
+        return Inertia::render('RentalCar/Create');
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function confirm(RentalCar $rental_car)
+    {
         //
     }
 
@@ -37,26 +45,21 @@ class RentalCarController extends Controller
         //
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(RentalCar $rentalCar)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(RentalCar $rentalCar)
+    public function edit(RentalCar $rental_car)
     {
-        //
+        return Inertia::render('RentalCar/Edit', [
+            'rental_car' => $rental_car
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRentalCarRequest $request, RentalCar $rentalCar)
+    public function update(UpdateRentalCarRequest $request, RentalCar $rental_car)
     {
         //
     }
@@ -64,7 +67,7 @@ class RentalCarController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(RentalCar $rentalCar)
+    public function destroy(RentalCar $rental_car)
     {
         //
     }
