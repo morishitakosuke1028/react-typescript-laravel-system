@@ -34,7 +34,26 @@ class RentalCarController extends Controller
      */
     public function confirm(RentalCar $rental_car)
     {
-        //
+        $validated = $request->validate([
+            'car_type' => ['required', 'string', 'max:255'],
+            'car_inspection' => ['required', 'string', 'max:255'],
+            'car_image_front' => ['nullable', 'file', 'image', 'max:2048'],
+            'car_image_side' => ['nullable', 'file', 'image', 'max:2048'],
+            'car_image_rear' => ['nullable', 'file', 'image', 'max:2048'],
+            'memo' => ['nullable', 'string', 'max:65535'],
+        ]);
+
+        // 一時保存
+        foreach (['car_image_front', 'car_image_side', 'car_image_rear'] as $field) {
+            if ($request->hasFile($field)) {
+                $tempPath = $request->file($field)->store('temp_rental_car_images', 'public');
+                $validated[$field] = $tempPath;
+            }
+        }
+
+        return Inertia::render('RentalCar/Confirm', [
+            'form' => $validated,
+        ]);
     }
 
     /**
@@ -42,7 +61,7 @@ class RentalCarController extends Controller
      */
     public function store(StoreRentalCarRequest $request)
     {
-        //
+
     }
 
 
