@@ -61,7 +61,20 @@ class RentalCarController extends Controller
      */
     public function store(StoreRentalCarRequest $request)
     {
+        $data = $request->all();
 
+        foreach (['car_image_front', 'car_image_side', 'car_image_rear'] as $field) {
+            if (!empty($data[$field])) {
+                $filename = basename($data[$field]);
+                $newPath = "rental_car_images/{$filename}";
+                Storage::disk('public')->move("temp_rental_car_images/{$filename}", $newPath);
+                $data[$field] = $newPath;
+            }
+        }
+
+        RentalCar::create($data);
+
+        return redirect()->route('RentalCars.create')->with('success', '登録しました。');
     }
 
 
