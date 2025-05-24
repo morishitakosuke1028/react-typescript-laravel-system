@@ -43,7 +43,6 @@ class RentalCarController extends Controller
             'memo' => ['nullable', 'string', 'max:65535'],
         ]);
 
-        // 一時保存
         foreach (['car_image_front', 'car_image_side', 'car_image_rear'] as $field) {
             if ($request->hasFile($field)) {
                 $tempPath = $request->file($field)->store('temp_rental_car_images', 'public');
