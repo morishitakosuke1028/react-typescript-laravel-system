@@ -34,23 +34,15 @@ class RentalCarController extends Controller
      */
     public function confirm(RentalCar $rental_car)
     {
-        $validated = $request->validate([
-            'car_type' => ['required', 'string', 'max:255'],
-            'car_inspection' => ['required', 'string', 'max:255'],
-            'car_image_front' => ['nullable', 'file', 'image', 'max:2048'],
-            'car_image_side' => ['nullable', 'file', 'image', 'max:2048'],
-            'car_image_rear' => ['nullable', 'file', 'image', 'max:2048'],
-            'memo' => ['nullable', 'string', 'max:65535'],
-        ]);
+        $validated = $request->validated();
 
         foreach (['car_image_front', 'car_image_side', 'car_image_rear'] as $field) {
             if ($request->hasFile($field)) {
-                $tempPath = $request->file($field)->store('temp_rental_car_images', 'public');
-                $validated[$field] = $tempPath;
+                $validated[$field] = $request->file($field)->store('temp_rental_car_images', 'public');
             }
         }
 
-        return Inertia::render('RentalCar/Confirm', [
+        return Inertia::render('RentalCar.Confirm', [
             'form' => $validated,
         ]);
     }
