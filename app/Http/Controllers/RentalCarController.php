@@ -14,7 +14,7 @@ class RentalCarController extends Controller
      */
     public function index()
     {
-        $rental_car = RentalCar::paginate(10);
+        $rental_cars = RentalCar::paginate(10);
 
         return Inertia::render('RentalCar/Index', [
             'rental_cars' => $rental_cars

@@ -62,6 +62,14 @@ export default function Authenticated({
                                     単価マスタ
                                 </NavLink>
                             </div>
+                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                <NavLink
+                                    href={route('RentalCars.index')}
+                                    active={route().current('RentalCars.index')}
+                                >
+                                    レンタカーマスタ
+                                </NavLink>
+                            </div>
                             <div className="relative ms-3 bg-indigo-500">
                                 <Dropdown>
                                     <Dropdown.Trigger>
@@ -183,6 +191,9 @@ export default function Authenticated({
                             </ResponsiveNavLink>
                             <ResponsiveNavLink href={route('MUnitPrices.index')}>
                                 単価マスタ
+                            </ResponsiveNavLink>
+                            <ResponsiveNavLink href={route('RentalCars.index')}>
+                                レンタカーマスタ
                             </ResponsiveNavLink>
                             <ResponsiveNavLink href={route('profile.edit')}>
                                 Profile
