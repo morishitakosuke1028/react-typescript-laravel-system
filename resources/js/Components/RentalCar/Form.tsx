@@ -7,9 +7,9 @@ type Props = {
         id: number;
         car_type: string;
         car_inspection: string;
-        car_image_front: string;
-        car_image_side: string;
-        car_image_rear: string;
+        car_image_front: string | null;
+        car_image_side: string | null;
+        car_image_rear: string | null;
         new_car_image_front:  File | null;
         new_car_image_side:  File | null;
         new_car_image_rear:  File | null;
@@ -47,7 +47,7 @@ export default function Form({ isEdit = false, rental_car = null, onSuccess }: P
                 }
             });
         } else {
-            post('/rental_cars', {
+            post('/rental_cars/confirm', {
                 onSuccess: () => {
                     if (onSuccess) onSuccess();
                 },

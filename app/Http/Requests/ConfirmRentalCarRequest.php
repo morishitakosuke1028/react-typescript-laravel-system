@@ -23,7 +23,7 @@ class ConfirmRentalCarRequest extends FormRequest
     {
         return [
             'car_type' => ['required', 'string', 'max:255'],
-            'car_inspection' => ['required', 'string', 'max:255'],
+            'car_inspection' => ['nullable', 'string', 'max:255'],
             'car_image_front' => ['nullable', 'file', 'image', 'max:2048'],
             'car_image_side' => ['nullable', 'file', 'image', 'max:2048'],
             'car_image_rear' => ['nullable', 'file', 'image', 'max:2048'],

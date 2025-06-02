@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ConfirmRentalCarRequest;
 use App\Http\Requests\StoreRentalCarRequest;
 use App\Http\Requests\UpdateRentalCarRequest;
 use App\Models\RentalCar;
@@ -32,7 +33,7 @@ class RentalCarController extends Controller
     /**
      * Display the specified resource.
      */
-    public function confirm(RentalCar $rental_car)
+    public function confirm(ConfirmRentalCarRequest $request)
     {
         $validated = $request->validated();
 
@@ -42,7 +43,7 @@ class RentalCarController extends Controller
             }
         }
 
-        return Inertia::render('RentalCar.Confirm', [
+        return Inertia::render('RentalCar/Confirm', [
             'form' => $validated,
         ]);
     }
