@@ -1,62 +1,79 @@
 import React from "react";
-import { useForm } from "@inertiajs/react";
+import { useForm, router } from "@inertiajs/react";
 
 type Props = {
-    isEdit?: boolean;
-    rental_car?: {
-        id: number;
-        car_type: string;
-        car_inspection: string;
-        car_image_front: string | null;
-        car_image_side: string | null;
-        car_image_rear: string | null;
-        new_car_image_front:  File | null;
-        new_car_image_side:  File | null;
-        new_car_image_rear:  File | null;
-        memo: string;
-    } | null;
-    onSuccess?: () => void;
+  isEdit?: boolean;
+  rental_car?: {
+    id: number;
+    car_type: string;
+    car_inspection: string;
+    car_image_front: string | null;
+    car_image_side: string | null;
+    car_image_rear: string | null;
+    memo: string;
+  } | null;
+  onSuccess?: () => void;
 };
 
 export default function Form({ isEdit = false, rental_car = null, onSuccess }: Props) {
     const { data, setData, post, put, processing, errors } = useForm({
         car_type: rental_car?.car_type ?? '',
         car_inspection: rental_car?.car_inspection ?? '',
-        car_image_front: rental_car?.car_image_front ?? '',
+        memo: rental_car?.memo ?? '',
         new_car_image_front: null as File | null,
-        car_image_side: rental_car?.car_image_side ?? '',
         new_car_image_side: null as File | null,
-        car_image_rear: rental_car?.car_image_rear ?? '',
         new_car_image_rear: null as File | null,
     });
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setData(e.target.name as keyof typeof data, e.target.value);
-    };
+    const handleChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
+        const { name } = e.target;
 
-    const handleSubmit = (e: React.FormEvent) => {
+        if (e.target instanceof HTMLInputElement && e.target.type === 'file') {
+            const files = e.target.files;
+            if (files && files.length > 0) {
+                setData(name as keyof typeof data, files[0]);
+            }
+        } else {
+            const value = e.target.value;
+            setData(name as keyof typeof data, value);
+        }
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
+        const formData = new FormData();
+        formData.append('car_type', data.car_type);
+        formData.append('car_inspection', data.car_inspection);
+        formData.append('memo', data.memo);
+
+        if (data.new_car_image_front) {
+            formData.append('car_image_front', data.new_car_image_front);
+        }
+        if (data.new_car_image_side) {
+            formData.append('car_image_side', data.new_car_image_side);
+        }
+        if (data.new_car_image_rear) {
+            formData.append('car_image_rear', data.new_car_image_rear);
+        }
+
         if (isEdit && rental_car) {
-            put(`/rental_cars/${rental_car.id}`, {
-                onSuccess: () => {
-                    if (onSuccess) onSuccess();
-                },
-                onError: (errors) => {
-                    console.error("バリデーションエラー:", errors);
-                }
+            formData.append('_method', 'put');
+            post(`/rental_cars/${rental_car.id}`, {
+                onSuccess: () => onSuccess && onSuccess(),
+                onError: (errors) => console.error(errors),
+                forceFormData: true,
             });
         } else {
             post('/rental_cars/confirm', {
-                onSuccess: () => {
-                    if (onSuccess) onSuccess();
-                },
-                onError: (errors) => {
-                    console.error("バリデーションエラー:", errors);
-                }
+                onSuccess: () => onSuccess && onSuccess(),
+                onError: (errors) => console.error(errors),
+                forceFormData: true,
             });
         }
-    };
+  };
 
     return (
         <form onSubmit={handleSubmit}>
