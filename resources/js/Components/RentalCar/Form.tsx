@@ -10,6 +10,9 @@ type Props = {
     car_image_front: string | null;
     car_image_side: string | null;
     car_image_rear: string | null;
+    new_car_image_front: File | null;
+    new_car_image_side: File | null;
+    new_car_image_rear: File | null;
     memo: string;
   } | null;
   onSuccess?: () => void;
@@ -19,21 +22,26 @@ export default function Form({ isEdit = false, rental_car = null, onSuccess }: P
     const { data, setData, post, put, processing, errors } = useForm({
         car_type: rental_car?.car_type ?? '',
         car_inspection: rental_car?.car_inspection ?? '',
+        car_image_front: rental_car?.car_image_front ?? '',
+        car_image_side: rental_car?.car_image_side ?? '',
+        car_image_rear: rental_car?.car_image_rear ?? '',
         memo: rental_car?.memo ?? '',
         new_car_image_front: null as File | null,
         new_car_image_side: null as File | null,
         new_car_image_rear: null as File | null,
+
+        _method: isEdit ? 'put' : '',
     });
 
     const handleChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
     ) => {
         const { name } = e.target;
 
         if (e.target instanceof HTMLInputElement && e.target.type === 'file') {
             const files = e.target.files;
             if (files && files.length > 0) {
-                setData(name as keyof typeof data, files[0]);
+                setData('new_car_image_front', files[0]);
             }
         } else {
             const value = e.target.value;
@@ -49,19 +57,27 @@ export default function Form({ isEdit = false, rental_car = null, onSuccess }: P
         formData.append('car_inspection', data.car_inspection);
         formData.append('memo', data.memo);
 
-        if (data.new_car_image_front) {
-            formData.append('car_image_front', data.new_car_image_front);
+        if (isEdit) {
+            formData.append('_method', 'put');
         }
-        if (data.new_car_image_side) {
-            formData.append('car_image_side', data.new_car_image_side);
-        }
-        if (data.new_car_image_rear) {
-            formData.append('car_image_rear', data.new_car_image_rear);
+
+        if (isEdit) {
+            if (data.new_car_image_front instanceof File) {
+                formData.append('new_car_image_front', data.new_car_image_front);
+            }
+
+            if (rental_car?.car_image_front) {
+                formData.append('new_car_image_front', rental_car.car_image_front);
+            }
+        } else {
+            if (data.new_car_image_front instanceof File) {
+                formData.append('new_car_image_front', data.new_car_image_front);
+            }
         }
 
         if (isEdit && rental_car) {
             formData.append('_method', 'put');
-            post(`/rental_cars/${rental_car.id}`, {
+            put(`/rental_cars/${rental_car.id}`, {
                 onSuccess: () => onSuccess && onSuccess(),
                 onError: (errors) => console.error(errors),
                 forceFormData: true,
@@ -139,12 +155,12 @@ export default function Form({ isEdit = false, rental_car = null, onSuccess }: P
                             }
                         </div>
                         {/* 画像がある場合に表示（編集時のみ） */}
-                        {isEdit && car_rental?.car_image_front && (
+                        {isEdit && rental_car?.car_image_front && (
                             <div className="p-2 w-full">
                                 <label className="leading-7 text-sm text-gray-600">現在の画像</label>
                                 <div className="mt-1">
                                     <img
-                                         src={`/storage/${car_rental.car_image_front}`}
+                                         src={`/storage/${rental_car.car_image_front}`}
                                         alt="画像"
                                         className="max-w-full h-auto rounded border border-gray-300"
                                     />
@@ -175,12 +191,12 @@ export default function Form({ isEdit = false, rental_car = null, onSuccess }: P
                             }
                         </div>
                         {/* 画像がある場合に表示（編集時のみ） */}
-                        {isEdit && car_rental?.car_image_side && (
+                        {isEdit && rental_car?.car_image_side && (
                             <div className="p-2 w-full">
                                 <label className="leading-7 text-sm text-gray-600">現在の画像</label>
                                 <div className="mt-1">
                                     <img
-                                         src={`/storage/${car_rental.car_image_side}`}
+                                         src={`/storage/${rental_car.car_image_side}`}
                                         alt="画像"
                                         className="max-w-full h-auto rounded border border-gray-300"
                                     />
@@ -211,12 +227,12 @@ export default function Form({ isEdit = false, rental_car = null, onSuccess }: P
                             }
                         </div>
                         {/* 画像がある場合に表示（編集時のみ） */}
-                        {isEdit && car_rental?.car_image_rear && (
+                        {isEdit && rental_car?.car_image_rear && (
                             <div className="p-2 w-full">
                                 <label className="leading-7 text-sm text-gray-600">現在の画像</label>
                                 <div className="mt-1">
                                     <img
-                                         src={`/storage/${car_rental.car_image_rear}`}
+                                         src={`/storage/${rental_car.car_image_rear}`}
                                         alt="画像"
                                         className="max-w-full h-auto rounded border border-gray-300"
                                     />
