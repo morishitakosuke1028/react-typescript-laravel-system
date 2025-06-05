@@ -5,9 +5,9 @@ type RentalCarFormData = {
   car_type: string;
   car_inspection: string;
   memo: string;
-  car_image_front?: string;
-  car_image_side?: string;
-  car_image_rear?: string;
+  new_car_image_front?: string;
+  new_car_image_side?: string;
+  new_car_image_rear?: string;
 };
 
 type Props = {
@@ -53,24 +53,24 @@ export default function Confirm({ form }: Props) {
           </div>
 
           {/* 画像表示 */}
-          {form.car_image_front && (
+          {form.new_car_image_front && (
             <div className="mb-4">
               <div className="font-semibold">正面画像</div>
-              <img src={`/storage/${form.car_image_front}`} alt="正面" className="w-full border rounded" />
+              <img src={`/storage/${form.new_car_image_front}`} alt="正面" className="w-full border rounded" />
             </div>
           )}
 
-          {form.car_image_side && (
+          {form.new_car_image_side && (
             <div className="mb-4">
               <div className="font-semibold">サイド画像</div>
-              <img src={`/storage/${form.car_image_side}`} alt="サイド" className="w-full border rounded" />
+              <img src={`/storage/${form.new_car_image_side}`} alt="サイド" className="w-full border rounded" />
             </div>
           )}
 
-          {form.car_image_rear && (
+          {form.new_car_image_rear && (
             <div className="mb-4">
               <div className="font-semibold">後部画像</div>
-              <img src={`/storage/${form.car_image_rear}`} alt="後部" className="w-full border rounded" />
+              <img src={`/storage/${form.new_car_image_rear}`} alt="後部" className="w-full border rounded" />
             </div>
           )}
 

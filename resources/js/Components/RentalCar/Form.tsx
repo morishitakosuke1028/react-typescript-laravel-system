@@ -75,20 +75,19 @@ export default function Form({ isEdit = false, rental_car = null, onSuccess }: P
             }
         }
 
-        if (isEdit && rental_car) {
-            formData.append('_method', 'put');
-            put(`/rental_cars/${rental_car.id}`, {
-                onSuccess: () => onSuccess && onSuccess(),
-                onError: (errors) => console.error(errors),
-                forceFormData: true,
-            });
-        } else {
-            post('/rental_cars/confirm', {
-                onSuccess: () => onSuccess && onSuccess(),
-                onError: (errors) => console.error(errors),
-                forceFormData: true,
-            });
-        }
+        const url = isEdit && rental_car ? `/rental_cars/${rental_car.id}` : '/rental_cars/confirm';
+        post(url, {
+            onSuccess: () => {
+                if (onSuccess) onSuccess();
+            },
+            onError: (errors: Record<string, string>) => {
+                console.error("バリデーションエラー:", errors);
+            },
+            forceFormData: true,
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
   };
 
     return (
