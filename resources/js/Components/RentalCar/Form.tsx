@@ -65,13 +65,30 @@ export default function Form({ isEdit = false, rental_car = null, onSuccess }: P
             if (data.new_car_image_front instanceof File) {
                 formData.append('new_car_image_front', data.new_car_image_front);
             }
-
             if (rental_car?.car_image_front) {
                 formData.append('new_car_image_front', rental_car.car_image_front);
+            }
+            if (data.new_car_image_side instanceof File) {
+                formData.append('new_car_image_side', data.new_car_image_side);
+            }
+            if (rental_car?.car_image_side) {
+                formData.append('new_car_image_side', rental_car.car_image_side);
+            }
+            if (data.new_car_image_rear instanceof File) {
+                formData.append('new_car_image_rear', data.new_car_image_rear);
+            }
+            if (rental_car?.car_image_rear) {
+                formData.append('new_car_image_rear', rental_car.car_image_rear);
             }
         } else {
             if (data.new_car_image_front instanceof File) {
                 formData.append('new_car_image_front', data.new_car_image_front);
+            }
+            if (data.new_car_image_side instanceof File) {
+                formData.append('new_car_image_side', data.new_car_image_side);
+            }
+            if (data.new_car_image_rear instanceof File) {
+                formData.append('new_car_image_rear', data.new_car_image_rear);
             }
         }
 
