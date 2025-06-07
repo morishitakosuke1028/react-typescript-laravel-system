@@ -262,7 +262,7 @@ export default function Form({ isEdit = false, rental_car = null, onSuccess }: P
                                 disabled={processing}
                                 className="text-white bg-blue-500 py-2 px-8 rounded hover:bg-blue-600"
                             >
-                                {isEdit ? "更新" : "登録"}
+                                {isEdit ? "更新" : "確認画面へ"}
                             </button>
                         </div>
                     </div>
