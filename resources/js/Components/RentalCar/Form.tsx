@@ -42,6 +42,8 @@ export default function Form({ isEdit = false, rental_car = null, onSuccess }: P
             const files = e.target.files;
             if (files && files.length > 0) {
                 setData('new_car_image_front', files[0]);
+                setData('new_car_image_side', files[0]);
+                setData('new_car_image_rear', files[0]);
             }
         } else {
             const value = e.target.value;
