@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ConfirmRentalCarRequest;
 use App\Http\Requests\StoreRentalCarRequest;
 use App\Http\Requests\UpdateRentalCarRequest;
+use Illuminate\Http\Request;
 use App\Models\RentalCar;
 use Inertia\Inertia;
 
@@ -25,8 +26,12 @@ class RentalCarController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
+        if ($request->query('clear_session') === '1') {
+            session()->forget('rental_car_form');
+        }
+
         return Inertia::render('RentalCar/Create');
     }
 
@@ -40,7 +45,7 @@ class RentalCarController extends Controller
         foreach (['new_car_image_front', 'new_car_image_side', 'new_car_image_rear'] as $field) {
             if ($request->hasFile($field)) {
                 $validated[$field] = $request->file($field)->store('temp_rental_car_images', 'public');
-                // dd($request);
+                dd($request);
             }
         }
 
