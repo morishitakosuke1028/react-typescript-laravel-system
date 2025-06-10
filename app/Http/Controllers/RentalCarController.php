@@ -42,16 +42,17 @@ class RentalCarController extends Controller
     {
         $validated = $request->validated();
 
-        foreach (['new_car_image_front', 'new_car_image_side', 'new_car_image_rear'] as $field) {
+        $fileFields = [
+            'new_car_image_front',
+            'new_car_image_side',
+            'new_car_image_rear',
+        ];
+
+        foreach ($fileFields as $field) {
             if ($request->hasFile($field)) {
                 $validated[$field] = $request->file($field)->store('temp_rental_car_images', 'public');
-                dd($request);
             }
         }
-
-        // if ($request->hasFile('new_car_image_front')) {
-        //     $path = $request->file('new_car_image_front')->store('temp_rental_car_images', 'public');
-        // }
 
         return Inertia::render('RentalCar/Confirm', [
             'form' => $validated,
