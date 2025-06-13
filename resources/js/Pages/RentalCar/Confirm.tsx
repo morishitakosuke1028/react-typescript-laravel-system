@@ -71,21 +71,21 @@ export default function Confirm({ form }: Props) {
                                 {form.new_car_image_front && (
                                     <div className="mb-4">
                                     <div className="font-semibold">正面画像</div>
-                                    <img src={`/storage/${form.new_car_image_front}`} alt="正面" className="w-full border rounded" />
+                                    <img src={`/storage/${form.new_car_image_front}`} alt="正面" className="w-full border rounded w-24 h-32" />
                                     </div>
                                 )}
 
                                 {form.new_car_image_side && (
                                     <div className="mb-4">
                                     <div className="font-semibold">サイド画像</div>
-                                    <img src={`/storage/${form.new_car_image_side}`} alt="サイド" className="w-full border rounded" />
+                                    <img src={`/storage/${form.new_car_image_side}`} alt="サイド" className="w-full border rounded w-24 h-32" />
                                     </div>
                                 )}
 
                                 {form.new_car_image_rear && (
                                     <div className="mb-4">
                                     <div className="font-semibold">後部画像</div>
-                                    <img src={`/storage/${form.new_car_image_rear}`} alt="後部" className="w-full border rounded" />
+                                    <img src={`/storage/${form.new_car_image_rear}`} alt="後部" className="w-full border rounded w-24 h-32" />
                                     </div>
                                 )}
 
