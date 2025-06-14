@@ -16,21 +16,18 @@ type Props = {
 };
 
 export default function Confirm({ form }: Props) {
-  const { data, post, processing } = useForm(form);
+    const { data, post, processing } = useForm(form);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    post('/rental_cars', {
-      forceFormData: true,
-    });
-  };
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        post('/rental_cars', {
+            forceFormData: true,
+        });
+    };
 
-  const handleBack = () => {
-    router.visit('/rental_cars/create', {
-      method: 'get',
-      data,
-    });
-  };
+    const handleBack = () => {
+        router.post('/rental_cars/create?clear_session=true', data);
+    };
 
   return (
     <AuthenticatedLayout
