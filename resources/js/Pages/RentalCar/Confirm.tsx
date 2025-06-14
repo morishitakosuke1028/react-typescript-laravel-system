@@ -89,21 +89,22 @@ export default function Confirm({ form }: Props) {
                                     </div>
                                 )}
 
-                                <div className="flex justify-between mt-6">
-                                    <button
-                                    type="button"
-                                    onClick={handleBack}
-                                    className="text-gray-600 border border-gray-400 px-6 py-2 rounded hover:bg-gray-100"
-                                    >
-                                    戻る
-                                    </button>
-
+                                <div className="p-2 w-full text-center">
                                     <button
                                     type="submit"
                                     disabled={processing}
                                     className="text-white bg-blue-500 px-6 py-2 rounded hover:bg-blue-600"
                                     >
                                     登録する
+                                    </button>
+                                </div>
+                                <div className="p-2 w-full text-center">
+                                    <button
+                                    type="button"
+                                    onClick={handleBack}
+                                    className="text-gray-600 border border-gray-400 px-6 py-2 rounded hover:bg-gray-100"
+                                    >
+                                    戻る
                                     </button>
                                 </div>
                                 </div>
