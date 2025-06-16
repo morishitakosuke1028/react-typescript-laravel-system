@@ -7,9 +7,6 @@ type RentalCar = {
     car_type: string;
     car_inspection: string;
     car_image_front: string;
-    car_image_side: string;
-    car_image_rear: string;
-    memo: string;
 };
 
 type PaginationLink = {
@@ -77,14 +74,24 @@ export default function Index({ rental_cars }: Props) {
                                                 rental_cars.data.map((rental_car) => (
                                                     <tr key={rental_car.id}>
                                                         <td className="px-4 py-3">{rental_car.id}</td>
+                                                        <td className="px-4 py-3">{rental_car.car_type}</td>
                                                         <td className="px-4 py-3">{rental_car.car_inspection}</td>
-                                                        <td className="px-4 py-3">{rental_car.memo}</td>
-                                                        <td className="px-4 py-3"><img src={`/storage/${rental_car.car_image_front}`} /></td>
+                                                        <td className="px-4 py-3">
+                                                            {rental_car.car_image_front ? (
+                                                                <img
+                                                                src={`/storage/${rental_car.car_image_front}`}
+                                                                alt="正面画像"
+                                                                className="w-24 h-auto rounded border"
+                                                                />
+                                                            ) : (
+                                                                <span className="text-gray-500 text-sm">画像なし</span>
+                                                            )}
+                                                        </td>
                                                         <td className="px-4 py-3">
                                                             <Link
                                                                 as="button"
                                                                 className="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg"
-                                                                href={route('MUnitPrices.edit', { rental_car: rental_car.id })}
+                                                                href={route('RentalCars.edit', { rental_car: rental_car.id })}
                                                             >
                                                                 編集
                                                             </Link></td>
