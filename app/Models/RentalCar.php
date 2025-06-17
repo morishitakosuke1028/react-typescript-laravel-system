@@ -33,13 +33,15 @@ class RentalCar extends Model
             } elseif (!empty($attributes[$field]) && is_string($attributes[$field])) {
                 $tempPath = $attributes[$field];
                 $filename = basename($tempPath);
-                $newPath = "rental_car_images/{$filename}";
+                $sourcePath = $tempPath;
+                $targetPath = "rental_car_images/{$filename}";
 
-                if (Storage::disk('public')->exists("temp_rental_car_images/{$filename}")) {
-                    Storage::disk('public')->move("temp_rental_car_images/{$filename}", $newPath);
-                    $attributes[$field] = $newPath;
+                if (Storage::disk('public')->exists($sourcePath)) {
+                    Storage::disk('public')->move($sourcePath, $targetPath);
+                    $attributes[$field] = $targetPath;
                 }
             }
+
             unset($attributes[$newKey]);
         }
 

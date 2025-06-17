@@ -68,7 +68,7 @@ class RentalCarController extends Controller
 
         RentalCar::createRentalCar($data);
 
-        return redirect()->route('RentalCars.create')->with('success', '登録しました。');
+        return redirect()->route('RentalCars.index')->with('success', '登録しました。');
     }
 
 
