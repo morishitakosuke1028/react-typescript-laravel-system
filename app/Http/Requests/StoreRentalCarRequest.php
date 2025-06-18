@@ -22,8 +22,8 @@ class StoreRentalCarRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'car_type' => ['nullable', 'string', 'max:255'],
-            'car_inspection' => ['nullable', 'string', 'max:255'],
+            'car_type' => ['required', 'string', 'max:255'],
+            'car_inspection' => ['required', 'string', 'max:255'],
             'new_car_image_front' => ['nullable', 'string'],
             'new_car_image_side' => ['nullable', 'string'],
             'new_car_image_rear' => ['nullable', 'string'],
