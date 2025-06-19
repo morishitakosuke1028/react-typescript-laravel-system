@@ -133,7 +133,7 @@ export default function Form({ isEdit = false, rental_car = null, onSuccess }: P
                         {/* 車検 */}
                         <div className="p-2 w-full">
                             <label htmlFor="car_inspection" className="leading-7 text-sm text-gray-600">
-                                車検
+                                車検<span className="text-red-500 ml-1">*</span>
                             </label>
                             <input
                                 type="text"

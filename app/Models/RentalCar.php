@@ -29,11 +29,11 @@ class RentalCar extends Model
             $newKey = 'new_' . $field;
 
             if (isset($attributes[$newKey]) && $attributes[$newKey] instanceof \Illuminate\Http\UploadedFile) {
-                $attributes[$field] = $attributes[$newKey]->store($field, 'public');
-            } elseif (!empty($attributes[$field]) && is_string($attributes[$field])) {
-                $tempPath = $attributes[$field];
+                $attributes[$field] = $attributes[$newKey]->store("rental_car_images", 'public');
+            } elseif (!empty($attributes[$newKey]) && is_string($attributes[$newKey])) {
+                $tempPath = $attributes[$newKey];
                 $filename = basename($tempPath);
-                $sourcePath = $tempPath;
+                $sourcePath = "temp_rental_car_images/{$filename}";
                 $targetPath = "rental_car_images/{$filename}";
 
                 if (Storage::disk('public')->exists($sourcePath)) {
