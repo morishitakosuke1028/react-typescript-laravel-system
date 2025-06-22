@@ -95,6 +95,11 @@ class RentalCarController extends Controller
      */
     public function destroy(RentalCar $rental_car)
     {
-        //
+        $rental_car->delete();
+        return to_route('RentalCars.index')
+        ->with([
+            'message' => '削除しました。',
+            'status' => 'danger',
+        ]);
     }
 }
