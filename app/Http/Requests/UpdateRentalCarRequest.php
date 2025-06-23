@@ -24,9 +24,9 @@ class UpdateRentalCarRequest extends FormRequest
         $rules = [
             'car_type' => ['nullable', 'string', 'max:255'],
             'car_inspection' => ['nullable', 'string', 'max:255'],
-            'new_car_image_front' => ['nullable', 'file', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
-            'new_car_image_side' => ['nullable', 'file', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
-            'new_car_image_rear' => ['nullable', 'file', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
+            'new_car_image_front' => ['nullable', 'string'],
+            'new_car_image_side' => ['nullable', 'string'],
+            'new_car_image_rear' => ['nullable', 'string'],
         ];
 
         return $rules;
