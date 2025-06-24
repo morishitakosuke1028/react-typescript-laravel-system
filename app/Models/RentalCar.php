@@ -51,23 +51,27 @@ class RentalCar extends Model
 
     public function updateRentalCar(array $data): void
     {
-        if (isset($data['new_car_image_front']) && $data['new_car_image_front'] instanceof \Illuminate\Http\UploadedFile) {
-            $data['car_image_front'] = $data['new_car_image_front']->store('car_image_front', 'public');
-            unset($data['new_car_image_front']);
-        } elseif (isset($data['new_car_image_front'])) {
-            unset($data['new_car_image_front']);
-        }
-        if (isset($data['new_car_image_side']) && $data['new_car_image_side'] instanceof \Illuminate\Http\UploadedFile) {
-            $data['car_image_side'] = $data['new_car_image_side']->store('car_image_side', 'public');
-            unset($data['new_car_image_side']);
-        } elseif (isset($data['new_car_image_side'])) {
-            unset($data['new_car_image_side']);
-        }
-        if (isset($data['new_car_image_rear']) && $data['new_car_image_rear'] instanceof \Illuminate\Http\UploadedFile) {
-            $data['car_image_rear'] = $data['new_car_image_rear']->store('car_image_rear', 'public');
-            unset($data['new_car_image_rear']);
-        } elseif (isset($data['new_car_image_rear'])) {
-            unset($data['new_car_image_rear']);
+        foreach ([
+            'car_image_front',
+            'car_image_side',
+            'car_image_rear',
+        ] as $field) {
+            $newKey = 'new_' . $field;
+
+            if (isset($data[$newKey]) && $data[$newKey] instanceof \Illuminate\Http\UploadedFile) {
+                $data[$field] = $data[$newKey]->store($field, 'public');
+            } elseif (!empty($data[$newKey]) && is_string($data[$newKey])) {
+                $filename = basename($data[$newKey]);
+                $sourcePath = "temp_rental_car_images/{$filename}";
+                $targetPath = "{$field}/{$filename}";
+
+                if (Storage::disk('public')->exists($sourcePath)) {
+                    Storage::disk('public')->move($sourcePath, $targetPath);
+                    $data[$field] = $targetPath;
+                }
+            }
+
+            unset($data[$newKey]);
         }
 
         $this->fill($data)->save();
