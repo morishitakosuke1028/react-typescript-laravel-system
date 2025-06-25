@@ -54,8 +54,13 @@ class RentalCarController extends Controller
             }
         }
 
+        $isEdit = $request->input('is_edit') === '1';
+        $id = $request->input('id');
+
         return Inertia::render('RentalCar/Confirm', [
             'form' => $validated,
+            'isEdit' => $isEdit,
+            'id' => $id,
         ]);
     }
 

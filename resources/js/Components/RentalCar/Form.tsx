@@ -56,6 +56,9 @@ export default function Form({ isEdit = false, rental_car = null, onSuccess }: P
         formData.append('car_type', data.car_type);
         formData.append('car_inspection', data.car_inspection);
         formData.append('memo', data.memo);
+        if (isEdit && rental_car?.id) {
+            formData.append('id', String(rental_car.id));
+        }
 
         if (isEdit) {
             formData.append('_method', 'put');
@@ -92,7 +95,8 @@ export default function Form({ isEdit = false, rental_car = null, onSuccess }: P
             }
         }
 
-        const url = isEdit && rental_car ? `/rental_cars/${rental_car.id}` : '/rental_cars/confirm';
+        // const url = isEdit && rental_car ? `/rental_cars/${rental_car.id}` : '/rental_cars/confirm';
+        const url = '/rental_cars/confirm';
         post(url, {
             onSuccess: () => {
                 if (onSuccess) onSuccess();
