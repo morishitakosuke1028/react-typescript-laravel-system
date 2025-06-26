@@ -54,13 +54,8 @@ class RentalCarController extends Controller
             }
         }
 
-        $isEdit = $request->input('is_edit') === '1';
-        $id = $request->input('id');
-
         return Inertia::render('RentalCar/Confirm', [
             'form' => $validated,
-            'isEdit' => $isEdit,
-            'id' => $id,
         ]);
     }
 
@@ -92,7 +87,10 @@ class RentalCarController extends Controller
      */
     public function update(UpdateRentalCarRequest $request, RentalCar $rental_car)
     {
-        //
+        $data = $request->validated();
+        $rental_car->updateRentalCar($data);
+
+        return redirect()->route('RentalCars.index')->with('success', '更新しました。');
     }
 
     /**
