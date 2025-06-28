@@ -68,7 +68,10 @@ class RentalCarController extends Controller
 
         RentalCar::createRentalCar($data);
 
-        return redirect()->route('RentalCars.index')->with('success', '登録しました。');
+        return redirect()->route('RentalCars.index')->with([
+            'message' => '更新しました。',
+            'status' => 'success',
+        ]);
     }
 
 
@@ -90,7 +93,10 @@ class RentalCarController extends Controller
         $data = $request->validated();
         $rental_car->updateRentalCar($data);
 
-        return redirect()->route('RentalCars.index')->with('success', '更新しました。');
+        return redirect()->route('RentalCars.index')->with([
+            'message' => '更新しました。',
+            'status' => 'success',
+        ]);
     }
 
     /**
