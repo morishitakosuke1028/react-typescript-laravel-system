@@ -2,18 +2,19 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
 import RentalCarForm from "@/Components/RentalCar/Form";
 
-type RentalCar = {
-    id: number;
-    car_type: string;
-    car_inspection: string;
-    memo: string;
-    car_image_front?: string;
-    car_image_side?: string;
-    car_image_rear?: string;
-};
-
 type Props = {
-    rental_car: RentalCar;
+    rental_car: {
+        id: number;
+        car_type: string;
+        car_inspection: string;
+        memo: string;
+        car_image_front?: string | null;
+        car_image_side?: string | null;
+        car_image_rear?: string | null;
+        new_car_image_front?: File | null;
+        new_car_image_side?: File | null;
+        new_car_image_rear?: File | null;
+    };
 };
 
 export default function Edit({ rental_car }: Props) {
@@ -41,7 +42,23 @@ export default function Edit({ rental_car }: Props) {
                             <section className="text-gray-600 body-font relative">
                                 <RentalCarForm
                                     isEdit={true}
-                                    rental_car={rental_car}
+                                    rental_car={{
+                                        ...rental_car,
+                                        new_car_image_front: null,
+                                        new_car_image_side: null,
+                                        new_car_image_rear: null,
+                                    } as {
+                                        id: number;
+                                        car_type: string;
+                                        car_inspection: string;
+                                        car_image_front: string | null;
+                                        car_image_side: string | null;
+                                        car_image_rear: string | null;
+                                        new_car_image_front: File | null;
+                                        new_car_image_side: File | null;
+                                        new_car_image_rear: File | null;
+                                        memo: string;
+                                    }}
                                 />
                                 <div className="mt-4 text-center">
                                     <Link href={route('Claims.index')} className="text-white bg-gray-500 py-2 px-8 rounded">
