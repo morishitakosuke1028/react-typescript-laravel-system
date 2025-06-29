@@ -17,6 +17,7 @@ type Claim = {
     m_unit_price_id: number;
     workday: string | null;
     worktime: string | null;
+    new_transportation_image: File | null;
 };
 
 type MPointDeparture = {
