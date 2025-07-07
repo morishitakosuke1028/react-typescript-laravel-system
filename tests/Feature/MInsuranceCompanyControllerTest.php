@@ -32,6 +32,8 @@ class MInsuranceCompanyControllerTest extends TestCase
 
     public function test_store_creates_new_company()
     {
+        $this->actingAs(User::factory()->create());
+
         $data = [
             'insurance_company_name' => 'テスト保険',
             'insurance_company_kana' => 'テストホケン',
@@ -44,6 +46,7 @@ class MInsuranceCompanyControllerTest extends TestCase
         $response = $this->post(route('MInsuranceCompanies.store'), $data);
 
         $response->assertRedirect(route('MInsuranceCompanies.index'));
+
         $this->assertDatabaseHas('m_insurance_companies', $data);
     }
 
