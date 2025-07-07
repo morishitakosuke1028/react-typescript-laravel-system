@@ -23,16 +23,11 @@ class MInsuranceCompanyControllerTest extends TestCase
 
     public function test_index_displays_companies()
     {
-        try {
-            MInsuranceCompany::factory()->count(3)->create();
+        MInsuranceCompany::factory()->count(3)->create();
 
-            $response = $this->get(route('MInsuranceCompanies.index'));
+        $response = $this->get(route('MInsuranceCompanies.index'));
 
-            $response->assertStatus(200); // ここで失敗する場合ログが残らないので明示的に記録
-        } catch (\Throwable $e) {
-            Log::error('Test failed: '.$e->getMessage(), ['trace' => $e->getTraceAsString()]);
-            throw $e; // 再スローしてテストは失敗させる
-        }
+        $response->assertStatus(200);
     }
 
     public function test_store_creates_new_company()
