@@ -6,11 +6,13 @@ use App\Models\MInsuranceCompany;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Support\Facades\Log;
 
 class MInsuranceCompanyControllerTest extends TestCase
 {
     use RefreshDatabase;
+    use WithoutMiddleware;
 
     protected function setUp(): void
     {
@@ -32,8 +34,7 @@ class MInsuranceCompanyControllerTest extends TestCase
 
     public function test_store_creates_new_company()
     {
-        $this->actingAs(User::factory()->create());
-
+        $this->withoutMiddleware(\App\Http\Middleware\VerifyCsrfToken::class);
         $data = [
             'insurance_company_name' => 'テスト保険',
             'insurance_company_kana' => 'テストホケン',
