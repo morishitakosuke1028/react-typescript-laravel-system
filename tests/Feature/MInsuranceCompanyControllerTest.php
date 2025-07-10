@@ -75,8 +75,10 @@ class MInsuranceCompanyControllerTest extends TestCase
         $company = MInsuranceCompany::factory()->create();
 
         $response = $this->delete(route('MInsuranceCompanies.destroy', $company));
-
         $response->assertRedirect(route('MInsuranceCompanies.index'));
+
+        dump(DB::table('m_insurance_companies')->where('id', $company->id)->first());
+
         $this->assertDatabaseMissing('m_insurance_companies', ['id' => $company->id]);
     }
 }
