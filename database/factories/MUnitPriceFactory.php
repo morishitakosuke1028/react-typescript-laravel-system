@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class MUnitPriceFactory extends Factory
 {
+    protected $model = \App\Models\MUnitPrice::class;
     /**
      * Define the model's default state.
      *
@@ -17,7 +18,8 @@ class MUnitPriceFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'unit_price_name' => $this->faker->word(),
+            'km_unit_price' => 1000,
         ];
     }
 }

@@ -87,11 +87,12 @@ class MInsuranceCompanyController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(MInsuranceCompany $m_insurance_company)
+    public function destroy($id)
     {
-        $m_insurance_company->delete();
-        return to_route('MInsuranceCompanies.index')
-        ->with([
+        $company = MInsuranceCompany::findOrFail($id);
+        $company->delete();
+
+        return to_route('MInsuranceCompanies.index')->with([
             'message' => '削除しました。',
             'status' => 'danger',
         ]);

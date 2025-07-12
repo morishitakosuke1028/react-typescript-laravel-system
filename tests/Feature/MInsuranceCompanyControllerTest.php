@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 use App\Models\MInsuranceCompany;
 use App\Models\User;
+use App\Models\Claim;
+use App\Models\MUnitPrice;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Tests\TestCase;
@@ -73,15 +75,16 @@ class MInsuranceCompanyControllerTest extends TestCase
 
     public function test_destroy_deletes_company()
     {
-        $company = MInsuranceCompany::factory()->create([
-            'policy_number' => 'POL' . rand(1000000, 9999999),
-            'tel' => '090' . rand(10000000, 99999999),
-            'email' => 'user' . rand(1, 10000) . '@example.com',
-        ]);
+        $company = MInsuranceCompany::factory()->create();
 
         $response = $this->delete(route('MInsuranceCompanies.destroy', $company));
         $response->assertRedirect(route('MInsuranceCompanies.index'));
 
-        $this->assertNull(DB::table('m_insurance_companies')->find($company->id));
+        // デバッグ用に出力
+        dump(DB::table('m_insurance_companies')->where('id', $company->id)->first());
+
+        $this->assertDatabaseMissing('m_insurance_companies', [
+            'id' => $company->id,
+        ]);
     }
 }
