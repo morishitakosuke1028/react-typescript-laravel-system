@@ -92,6 +92,22 @@ class MInsuranceCompanyControllerTest extends TestCase
         $this->assertDatabaseHas('m_insurance_companies', $updatedData);
     }
 
+    public function test_update_fails_with_nonexistent_id()
+    {
+        $updatedData = [
+            'insurance_company_name' => '存在しない',
+            'insurance_company_kana' => 'ソンザイシナイ',
+            'policy_number' => 'POL0000000',
+            'person_name' => '誰か',
+            'tel' => '00000000000',
+            'email' => 'ghost@example.com',
+        ];
+
+        $response = $this->put(route('MInsuranceCompanies.update', ['m_insurance_company' => 9999]), $updatedData);
+
+        $response->assertStatus(302);
+    }
+
     public function test_destroy_deletes_company()
     {
         $company = MInsuranceCompany::factory()->create();
