@@ -54,6 +54,25 @@ class MInsuranceCompanyControllerTest extends TestCase
         $this->assertDatabaseHas('m_insurance_companies', $data);
     }
 
+    public function test_store_fails_with_missing_required_fields()
+    {
+        $data = [
+            // 'insurance_company_name' => 'テスト保険', ← 故意に未入力
+            'insurance_company_kana' => 'テストホケン',
+            'policy_number' => 'POL1234567',
+            'person_name' => '田中太郎',
+            'tel' => '09012345678',
+            'email' => 'test@example.com',
+        ];
+
+        $response = $this->post(route('MInsuranceCompanies.store'), $data);
+
+        $response->assertSessionHasErrors(['insurance_company_name']);
+        $this->assertDatabaseMissing('m_insurance_companies', [
+            'insurance_company_kana' => 'テストホケン'
+        ]);
+    }
+
     public function test_update_edits_existing_company()
     {
         $company = MInsuranceCompany::factory()->create();
