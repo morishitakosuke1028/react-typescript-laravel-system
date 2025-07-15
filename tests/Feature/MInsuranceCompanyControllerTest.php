@@ -122,4 +122,11 @@ class MInsuranceCompanyControllerTest extends TestCase
             'id' => $company->id,
         ]);
     }
+
+    public function test_destroy_fails_with_nonexistent_id()
+    {
+        $response = $this->delete(route('MInsuranceCompanies.destroy', ['m_insurance_company' => 9999]));
+
+        $response->assertStatus(404);
+    }
 }
