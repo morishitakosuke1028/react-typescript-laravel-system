@@ -17,7 +17,9 @@ class MPointDepartureFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'point_departure_name' => $this->faker->city . '出発地',
+            'zip' => $this->faker->postcode(),
+            'address' => $this->faker->address(),
         ];
     }
 }
