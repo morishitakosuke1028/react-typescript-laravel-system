@@ -28,4 +28,10 @@ class MPointDepartureControllerTest extends TestCase
         $response = $this->get(route('MPointDepartures.index'));
         $response->assertStatus(200);
     }
+
+    public function test_create_displays_form()
+    {
+        $response = $this->get(route('MPointDepartures.create'));
+        $response->assertStatus(200);
+    }
 }
