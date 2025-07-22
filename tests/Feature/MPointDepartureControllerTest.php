@@ -34,4 +34,18 @@ class MPointDepartureControllerTest extends TestCase
         $response = $this->get(route('MPointDepartures.create'));
         $response->assertStatus(200);
     }
+
+    public function test_store_creates_new_departure()
+    {
+        $data = [
+            'point_departure_name' => 'テスト出発地',
+            'zip' => '1234567',
+            'address' => '東京都港区',
+        ];
+
+        $response = $this->post(route('MPointDepartures.store'), $data);
+
+        $response->assertRedirect(route('MPointDepartures.index'));
+        $this->assertDatabaseHas('m_point_departures', $data);
+    }
 }
