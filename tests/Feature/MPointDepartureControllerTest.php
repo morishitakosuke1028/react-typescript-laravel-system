@@ -48,4 +48,12 @@ class MPointDepartureControllerTest extends TestCase
         $response->assertRedirect(route('MPointDepartures.index'));
         $this->assertDatabaseHas('m_point_departures', $data);
     }
+
+    public function test_edit_displays_existing_departure()
+    {
+        $departure = MPointDeparture::factory()->create();
+
+        $response = $this->get(route('MPointDepartures.edit', $departure));
+        $response->assertStatus(200);
+    }
 }
