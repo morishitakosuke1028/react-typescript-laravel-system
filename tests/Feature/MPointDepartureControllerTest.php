@@ -56,4 +56,20 @@ class MPointDepartureControllerTest extends TestCase
         $response = $this->get(route('MPointDepartures.edit', $departure));
         $response->assertStatus(200);
     }
+
+    public function test_update_edits_existing_departure()
+    {
+        $departure = MPointDeparture::factory()->create();
+
+        $updatedData = [
+            'point_departure_name' => '更新された出発地',
+            'zip' => '7654321',
+            'address' => '大阪市北区',
+        ];
+
+        $response = $this->put(route('MPointDepartures.update', $departure), $updatedData);
+
+        $response->assertRedirect(route('MPointDepartures.index'));
+        $this->assertDatabaseHas('m_point_departures', $updatedData);
+    }
 }
