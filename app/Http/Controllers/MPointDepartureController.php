@@ -81,13 +81,15 @@ class MPointDepartureController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(MPointDeparture $m_point_departure)
+    public function destroy($id)
     {
+        $m_point_departure = MPointDeparture::findOrFail($id);
         $m_point_departure->delete();
+
         return to_route('MPointDepartures.index')
-        ->with([
-            'message' => '削除しました。',
-            'status' => 'danger',
-        ]);
+            ->with([
+                'message' => '削除しました。',
+                'status' => 'danger',
+            ]);
     }
 }

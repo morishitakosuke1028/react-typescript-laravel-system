@@ -72,4 +72,14 @@ class MPointDepartureControllerTest extends TestCase
         $response->assertRedirect(route('MPointDepartures.index'));
         $this->assertDatabaseHas('m_point_departures', $updatedData);
     }
+
+    public function test_destroy_deletes_departure()
+    {
+        $departure = MPointDeparture::factory()->create();
+
+        $response = $this->delete(route('MPointDepartures.destroy', $departure));
+        $response->assertRedirect(route('MPointDepartures.index'));
+
+        $this->assertDatabaseMissing('m_point_departures', ['id' => $departure->id]);
+    }
 }
