@@ -82,4 +82,11 @@ class MPointDepartureControllerTest extends TestCase
 
         $this->assertDatabaseMissing('m_point_departures', ['id' => $departure->id]);
     }
+
+    public function test_destroy_fails_with_nonexistent_id()
+    {
+        $response = $this->delete(route('MPointDepartures.destroy', ['m_point_departure' => 9999]));
+
+        $response->assertStatus(404);
+    }
 }
