@@ -28,4 +28,10 @@ class MUnitPriceControllerTest extends TestCase
         $response = $this->get(route('MUnitPrices.index'));
         $response->assertStatus(200);
     }
+
+    public function test_create_displays_form()
+    {
+        $response = $this->get(route('MUnitPrices.create'));
+        $response->assertStatus(200);
+    }
 }
