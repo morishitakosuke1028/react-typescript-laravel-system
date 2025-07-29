@@ -34,4 +34,17 @@ class MUnitPriceControllerTest extends TestCase
         $response = $this->get(route('MUnitPrices.create'));
         $response->assertStatus(200);
     }
+
+    public function test_store_creates_new_unit_price()
+    {
+        $data = [
+            'unit_price_name' => 'テスト単価',
+            'km_unit_price' => 1000,
+        ];
+
+        $response = $this->post(route('MUnitPrices.store'), $data);
+
+        $response->assertRedirect(route('MUnitPrices.index'));
+        $this->assertDatabaseHas('m_unit_prices', $data);
+    }
 }
