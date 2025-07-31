@@ -47,4 +47,12 @@ class MUnitPriceControllerTest extends TestCase
         $response->assertRedirect(route('MUnitPrices.index'));
         $this->assertDatabaseHas('m_unit_prices', $data);
     }
+
+    public function test_edit_displays_existing_unit_price()
+    {
+        $unitPrice = MUnitPrice::factory()->create();
+
+        $response = $this->get(route('MUnitPrices.edit', $unitPrice));
+        $response->assertStatus(200);
+    }
 }
