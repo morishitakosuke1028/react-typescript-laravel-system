@@ -79,8 +79,9 @@ class MUnitPriceController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(MUnitPrice $m_unit_price)
+    public function destroy($id)
     {
+        $m_unit_price = MUnitPrice::findOrFail($id);
         $m_unit_price->delete();
         return to_route('MUnitPrices.index')
         ->with([

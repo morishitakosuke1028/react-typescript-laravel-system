@@ -70,4 +70,14 @@ class MUnitPriceControllerTest extends TestCase
 
         $this->assertDatabaseHas('m_unit_prices', $updatedData);
     }
+
+    public function test_destroy_deletes_unit_price()
+    {
+        $unitPrice = MUnitPrice::factory()->create();
+
+        $response = $this->delete(route('MUnitPrices.destroy', $unitPrice));
+        $response->assertRedirect(route('MUnitPrices.index'));
+
+        $this->assertDatabaseMissing('m_unit_prices', ['id' => $unitPrice->id]);
+    }
 }
