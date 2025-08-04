@@ -80,4 +80,13 @@ class MUnitPriceControllerTest extends TestCase
 
         $this->assertDatabaseMissing('m_unit_prices', ['id' => $unitPrice->id]);
     }
+
+    public function test_store_fails_with_missing_name()
+    {
+        $response = $this->post(route('MUnitPrices.store'), [
+            'km_unit_price' => 300.00,
+        ]);
+
+        $response->assertSessionHasErrors(['unit_price_name']);
+    }
 }
