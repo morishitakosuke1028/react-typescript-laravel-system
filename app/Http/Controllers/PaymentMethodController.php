@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreCreditCardRequest;
-use App\Http\Requests\UpdateCreditCardRequest;
-use App\Models\CreditCard;
+use App\Http\Requests\StorePaymentMethodRequest;
+use App\Http\Requests\UpdatePaymentMethodRequest;
+use App\Models\PaymentMethod;
 
-class CreditCardController extends Controller
+class PaymentMethodController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +27,7 @@ class CreditCardController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCreditCardRequest $request)
+    public function store(StorePaymentMethodRequest $request)
     {
         //
     }
@@ -35,7 +35,7 @@ class CreditCardController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(CreditCard $creditCard)
+    public function show(PaymentMethod $paymentMethod)
     {
         //
     }
@@ -43,7 +43,7 @@ class CreditCardController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(CreditCard $creditCard)
+    public function edit(PaymentMethod $paymentMethod)
     {
         //
     }
@@ -51,7 +51,7 @@ class CreditCardController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCreditCardRequest $request, CreditCard $creditCard)
+    public function update(UpdatePaymentMethodRequest $request, PaymentMethod $paymentMethod)
     {
         //
     }
@@ -59,7 +59,7 @@ class CreditCardController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CreditCard $creditCard)
+    public function destroy(PaymentMethod $paymentMethod)
     {
         //
     }
