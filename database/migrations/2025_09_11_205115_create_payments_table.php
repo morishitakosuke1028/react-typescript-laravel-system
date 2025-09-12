@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('payment_method_id')->nullable()->constrained()->onDelete('set null');
+            $table->unsignedBigInteger('amount');
+            $table->string('currency', 3)->default('JPY');
+            $table->enum('status', ['pending', 'succeeded', 'failed'])->default('pending');
+            $table->string('transaction_id')->nullable();
             $table->timestamps();
         });
     }

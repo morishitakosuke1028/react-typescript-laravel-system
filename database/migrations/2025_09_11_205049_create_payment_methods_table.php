@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('payment_methods', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('provider')->default('stripe');
+            $table->string('token');
+            $table->string('brand')->nullable();
+            $table->string('last4', 4)->nullable();
+            $table->unsignedTinyInteger('exp_month')->nullable();
+            $table->unsignedSmallInteger('exp_year')->nullable();
             $table->timestamps();
         });
     }
