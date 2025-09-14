@@ -22,7 +22,9 @@ class StorePaymentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'payment_method_id' => ['required', 'exists:payment_methods,id'],
+            'amount' => ['required', 'integer', 'min:1'],
+            'currency' => ['required', 'string', 'size:3'],
         ];
     }
 }

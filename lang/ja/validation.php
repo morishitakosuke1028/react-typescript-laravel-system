@@ -259,6 +259,14 @@ return [
         'username' => 'ユーザー名',
         'year' => '年',
         'tel' => '電話番号',
+        'token' => 'カード情報',
+        'brand' => 'カードブランド',
+        'last4' => 'カード番号下4桁',
+        'exp_month' => '有効期限（月）',
+        'exp_year' => '有効期限（年）',
+        'payment_method_id' => '支払い方法',
+        'amount' => '金額',
+        'currency' => '通貨',
     ],
 
 ];
