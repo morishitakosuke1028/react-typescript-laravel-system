@@ -60,6 +60,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/rental_cars/{rental_car}/edit', [RentalCarController::class, 'edit'])->name('RentalCars.edit');
     Route::put('/rental_cars/{rental_car}', [RentalCarController::class, 'update'])->name('RentalCars.update');
     Route::delete('/rental_cars/{rental_car}', [RentalCarController::class, 'destroy'])->name('RentalCars.destroy');
+    Route::resource('payment_methods', PaymentMethodController::class)
+        ->only(['index','create','store','destroy']);
+    Route::get('/payments', [PaymentController::class, 'index'])->name('payments.index');
+    Route::post('/payments', [PaymentController::class, 'store'])->name('payments.store');
 });
 
 require __DIR__.'/auth.php';
