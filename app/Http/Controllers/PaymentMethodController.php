@@ -12,7 +12,8 @@ class PaymentMethodController extends Controller
      */
     public function index()
     {
-        //
+        $methods = auth()->user()->paymentMethods()->latest()->get();
+        return view('payment_methods.index', compact('methods'));
     }
 
     /**
@@ -20,7 +21,7 @@ class PaymentMethodController extends Controller
      */
     public function create()
     {
-        //
+        return view('payment_methods.create');
     }
 
     /**
@@ -28,31 +29,18 @@ class PaymentMethodController extends Controller
      */
     public function store(StorePaymentMethodRequest $request)
     {
-        //
-    }
+        PaymentMethod::create([
+            'user_id' => auth()->id(),
+            'provider' => 'stripe',
+            'token' => $request->token,
+            'brand' => $request->brand,
+            'last4' => $request->last4,
+            'exp_month' => $request->exp_month,
+            'exp_year' => $request->exp_year,
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(PaymentMethod $paymentMethod)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(PaymentMethod $paymentMethod)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdatePaymentMethodRequest $request, PaymentMethod $paymentMethod)
-    {
-        //
+        return redirect()->route('payment_methods.index')
+                         ->with('success', 'カードを登録しました。');
     }
 
     /**
@@ -60,6 +48,13 @@ class PaymentMethodController extends Controller
      */
     public function destroy(PaymentMethod $paymentMethod)
     {
-        //
+        if ($paymentMethod->user_id !== auth()->id()) {
+            abort(403, 'このカードを削除する権限がありません。');
+        }
+
+        $paymentMethod->delete();
+
+        return redirect()->route('payment_methods.index')
+                         ->with('success', 'カードを削除しました。');
     }
 }
